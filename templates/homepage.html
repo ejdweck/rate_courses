@@ -1,0 +1,9 @@
+{% extends 'index.html' %}
+{% load bootstrap4 %}
+{% block content %}
+
+{% for r in reviews %}
+  {{ r }}
+{% endfor %}
+
+{% endblock %}

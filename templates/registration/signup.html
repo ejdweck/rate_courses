@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% load bootstrap4 %}
+{% block content %}
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn-primary" type="submit">Sign up</button>
+  </form>
+{% endblock %}

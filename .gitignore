@@ -1,0 +1,29 @@
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Python ###
+# byte compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+.installed.cfg
+bin
+develop-eggs
+dist
+downloads
+parts
+src/*.egg-info
+lib
+lib64
+
+
+### django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+
