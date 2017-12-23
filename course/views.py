@@ -5,10 +5,24 @@ from django.db import connection
 
 def homepage(request):
     cursor = connection.cursor()
-    query = 'SELECT Course.courseId, CourseReview.professor, CourseReview.review FROM Course, CourseReview WHERE Course.courseId = CourseReview.courseId'
+    query = 'SELECT Course.courseNumber, Course.courseName, CourseReview.professor, CourseReview.review FROM Course, CourseReview WHERE Course.courseId = CourseReview.courseId'
     cursor.execute(query)
     reviews = cursor.fetchall()
     return render(request, 'homepage.html', {'reviews': reviews})
+
+def about(request):
+    return render(request, 'about.html')
+
+def courses(request):
+    return render(request, 'courses.html')
+
+
+def course_reviews(request):
+    cursor = connection.cursor()
+    query = 'SELECT Course.courseNumber, Course.courseName, CourseReview.professor, CourseReview.review FROM Course, CourseReview WHERE Course.courseId = CourseReview.courseId'
+    cursor.execute(query)
+    tuples = cursor.fetchall()
+    return render(request, 'course_reviews.html', {'allcourses': tuples})
 
 
 def signup(request):
@@ -20,7 +34,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return redirect('homepage')
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})

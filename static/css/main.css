@@ -1,0 +1,19 @@
+h1, h2, h3, h4, h5, h6 {
+	text-align: center;
+}
+
+#card_box {
+	min-width: 20rem;
+	max-width: 20rem;
+	height: auto;
+	margin: 2.5% 2.5% 2.5% 2.5%;
+}
+
+.homepage-text {
+	margin-top: 5%;
+}
+
+.search-homepage {
+	padding-left: 10%;
+	padding-right: 10%;
+}

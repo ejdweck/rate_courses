@@ -7,6 +7,9 @@ from course import views as core_views
 urlpatterns = [
     # template urls
     url(r'^$', views.homepage, name='homepage'),
+    url(r'^about/$', views.about, name='about'),
+ 	url(r'^courses/$', views.courses, name='courses'),
+ 	url(r'^course_reviews/$', views.course_reviews, name='course_reviews'),
 
     # authentification system urls
     url(r'^login/$', auth_views.login, name='login'),
