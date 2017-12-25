@@ -5,7 +5,7 @@ from django.db import connection
 
 def homepage(request):
     cursor = connection.cursor()
-    query = 'SELECT Course.courseNumber, Course.courseName, CourseReview.professor, CourseReview.review FROM Course, CourseReview WHERE Course.courseId = CourseReview.courseId'
+    query = 'SELECT Course.courseNumber, Course.courseName, Professor.firstName, Professor.lastName, CourseReview.review FROM Course, Professor, CourseReview WHERE Course.courseId = CourseReview.courseId AND Professor.professorID = CourseReview.professorId'
     cursor.execute(query)
     reviews = cursor.fetchall()
     return render(request, 'homepage.html', {'reviews': reviews})

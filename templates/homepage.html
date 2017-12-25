@@ -23,10 +23,10 @@
 	<div class="card-deck">
 	 {% for course in reviews %}
 	    <div class="card border-dark mb-3" id="card_box">
-	    	<div class="card-header">{{course.0}}: {{course.1}}</div>
+	    	<div class="card-header">Professor: {{course.2}} {{course.3}}</div>
 		    <div class="card-body text-dark">
-		      <h4 class="card-title">{{course.2}}</h4>
-		      <p class="card-text">{{course.3}}</p>
+		      <h4 class="card-title">{{course.0}}: {{course.1}}</h4>
+		      <p class="card-text">{{course.4}}</p>
 		    </div>
 		    <div class="card-footer">
 		      <small class="text-muted">Last updated 3 mins ago</small>
