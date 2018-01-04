@@ -1,28 +1,31 @@
+import datetime
 from django import forms
 
-class add_course_review_form(forms.Form):
-    courseId = forms.CharField(
+class AddCourseReviewForm(forms.Form):
+    courseDepartment = forms.CharField(
         required = True,
-        label = 'course',
+        label = 'courseDepartment',
         max_length = 32
     )
-    email = forms.CharField(
+    courseNumber = forms.CharField(
         required = True,
-        label = 'Email',
-        max_length = 32,
+        label = 'courseNumber',
+        max_length = 32
     )
-    password = forms.CharField(
+    instructor = forms.CharField(
         required = True,
-        label = 'Password',
-        max_length = 32,
-        widget = forms.PasswordInput()
+        label = 'instructor',
+        max_length = 32
     )
-
-
-  reviewId INTEGER NOT NULL,
-  courseId INTEGER NOT NULL,
-  professorId INTEGER NOT NULL,
-  reviewerId INTEGER NOT NULL,
-  review VARCHAR(30) NOT NULL,
-  rating INTEGER NOT NULL,
-  reviewDate DATE NOT NULL,
+    review = forms.CharField(
+    	required = True,
+    	label = 'review',
+    	max_length = 32
+    )
+    rating = forms.IntegerField(
+    	required = True,
+    	label = 'rating'
+    )
+    reviewDate = forms.DateField(
+    	initial = datetime.date.today
+    )

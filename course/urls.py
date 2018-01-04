@@ -11,6 +11,7 @@ urlpatterns = [
  	url(r'^courses/$', views.courses, name='courses'),
     url(r'^course_reviews/$', views.course_reviews, name='course_reviews'),
     url(r'^add_course_review/$', views.add_course_review, name='add_course_review'),
+    url(r'^thanks/$', views.thanks, name='thanks'), 
 
     # authentification system urls
     url(r'^login/$', auth_views.login, name='login'),

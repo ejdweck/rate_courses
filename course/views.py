@@ -2,6 +2,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.db import connection
+from course.forms import AddCourseReviewForm
+from .models import CourseReview, Course
+from django.http import HttpResponse
+
 
 def homepage(request):
     cursor = connection.cursor()
@@ -30,8 +34,63 @@ def course_reviews(request):
     tuples = cursor.fetchall()
     return render(request, 'course_reviews.html', {'allcourses': tuples})
 
-def add_course_review(request)  :
-    pass
+def add_course_review(request):
+    if request.method == 'GET':
+        form = AddCourseReviewForm()
+    else:
+        form = AddCourseReviewForm(request.POST)
+        if form.is_valid():
+            courseDepartment = form.cleaned_data['courseDepartment']
+            courseNumber = form.cleaned_data['courseNumber']
+            instructor = form.cleaned_data['instructor']
+            review = form.cleaned_data['review']
+            rating = form.cleaned_data['rating']
+            reviewDate = form.cleaned_data['reviewDate']
+            print(courseDepartment)
+            print(courseNumber)
+            print(instructor)
+            print(review)
+            print(rating)
+            print(reviewDate)
+            courseRev = CourseReview()
+            courseRev.courseDepartment = courseDepartment
+            courseRev.courseNumber = courseNumber
+            courseRev.instructor = instructor
+            courseRev.review = review
+            courseRev.rating = rating
+            courseRev.reviewDate = reviewDate
+            courseRev.instructorId = 1
+            courseRev.reviewerId = 1
+            courseRev.review_date = reviewDate
+
+
+
+            courseC = Course()
+            courseC.courseDepartment = courseDepartment
+            courseC.courseNumber = courseNumber
+            courseC.name = "test courseName"
+            courseC.save()
+
+            courseRev.courseId = courseC
+            courseRev.save()
+
+            for e in Course.objects.all():
+                print(e.courseNumber)
+            ''' 
+            courseReview = CourseReview.objects.create(
+                courseDepartment=str(courseDepartment),
+                courseNumber=str(courseNumber),
+                instructor=str(instructor),
+                review=str(review),
+                rating=str(rating),
+                reviewDate=reviewDate
+            )
+            '''
+            return redirect('thanks')
+    return render(request, "add_course_review.html", {'form': form})
+
+def thanks(request):
+    return HttpResponse('Thank you for your submission.')
 
 def signup(request):
     if request.method == 'POST':
