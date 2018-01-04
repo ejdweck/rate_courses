@@ -33,22 +33,22 @@ def insert_tuples(cursor):
     cursor.execute(query)
 
     #insert courses
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating) VALUES ('Databases','564','CS',1.0)"
+    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Databases','564','CS',1.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating) VALUES ('Artificial Intelligence','540','CS',2.0)"
+    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Artificial Intelligence','540','CS',2.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating) VALUES ('Algorithims','577','CS',3.0)"
+    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Algorithims','577','CS',3.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating) VALUES ('Discrete Math','240','CS',4.0)"
+    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Discrete Math','240','CS',4.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating) VALUES ('Operating Systems','537','CS',5.0)"
+    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Operating Systems','537','CS',5.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating) VALUES ('Human Computer Interaction','570','CS',6.0)"
+    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Human Computer Interaction','570','CS',6.0,0)"
     cursor.execute(query)
 
     #insert courseReviews

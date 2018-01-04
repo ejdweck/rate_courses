@@ -2,6 +2,22 @@
 
 {% block content %}
 <div class="container"> 
-	<h1>Courses</h1>
+	<h2>Recently Reviewed Courses</h2>
+	<div class="card-deck">
+	 {% for course in courses %}
+	    <div class="card border-dark mb-3" id="card_box">
+	    	<div class="card-header">{{course.0}}{{course.1}}: {{course.2}}</div>
+		    <div class="card-body text-dark">
+		      <h4 class="card-title"></h4>
+		      <p class="card-text">Rating: {{course.3}}</p>
+		      <p class="card-text">Number Reviews: {{course.4}}</p>
+		    </div>
+		    <div class="card-footer">
+		      <small class="text-muted">Last updated 3 mins ago</small>
+		    </div>
+		 </div>
+	  {% endfor %}
+	</div>
 </div>
+
 {% endblock %}

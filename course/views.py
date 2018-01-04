@@ -5,7 +5,8 @@ from django.db import connection
 
 def homepage(request):
     cursor = connection.cursor()
-    query = 'SELECT Course.courseNumber, Course.courseName, Professor.firstName, Professor.lastName, CourseReview.review FROM Course, Professor, CourseReview WHERE Course.courseId = CourseReview.courseId AND Professor.professorID = CourseReview.professorId'
+    #query = 'SELECT Course.courseNumber, Course.courseName, Instructor.firstName, Instructor.lastName, CourseReview.review FROM Course, Instructor, CourseReview WHERE Course.courseId = CourseReview.courseId AND Instructor.professorID = CourseReview.professorId'
+    query = ''
     cursor.execute(query)
     reviews = cursor.fetchall()
     return render(request, 'homepage.html', {'reviews': reviews})
@@ -14,16 +15,23 @@ def about(request):
     return render(request, 'about.html')
 
 def courses(request):
-    return render(request, 'courses.html')
+    cursor = connection.cursor()
+    query = 'SELECT * FROM Course'
+    cursor.execute(query)
+    courses = cursor.fetchall()
+    return render(request, 'courses.html', {'courses':courses})
 
 
 def course_reviews(request):
     cursor = connection.cursor()
-    query = 'SELECT Course.courseNumber, Course.courseName, CourseReview.professor, CourseReview.review FROM Course, CourseReview WHERE Course.courseId = CourseReview.courseId'
+    #query = 'SELECT Course.courseNumber, Course.courseName, CourseReview.instructorId, CourseReview.review FROM Course, CourseReview WHERE Course.courseNumber = CourseReview.courseNumber'
+    query = ''
     cursor.execute(query)
     tuples = cursor.fetchall()
     return render(request, 'course_reviews.html', {'allcourses': tuples})
 
+def add_course_review(request)  :
+    pass
 
 def signup(request):
     if request.method == 'POST':

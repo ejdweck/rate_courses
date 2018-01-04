@@ -5,25 +5,12 @@
 	<h2 class="homepage-text">Honest Reviews on Courses at the University of Wisconsin Madison</h2>
 </div>
 <br>
-<div class="container search-homepage">
-	<form>
-	  <div class="form-row">
-	    <div class="col-7">
-	      <input type="text" class="form-control" placeholder="Search by Course Name, Course Number or Professor">
-	    </div>
-	    <div class="col">
-	   		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-	    </div>
-	  </div>
-	</form>
-</div>
-<br>
 <div class="container"> 
 	<h2>Recently Reviewed Courses</h2>
 	<div class="card-deck">
 	 {% for course in reviews %}
 	    <div class="card border-dark mb-3" id="card_box">
-	    	<div class="card-header">Professor: {{course.2}} {{course.3}}</div>
+	    	<div class="card-header">	Professor: {{course.2}} {{course.3}}</div>
 		    <div class="card-body text-dark">
 		      <h4 class="card-title">{{course.0}}: {{course.1}}</h4>
 		      <p class="card-text">{{course.4}}</p>
