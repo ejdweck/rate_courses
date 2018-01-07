@@ -14,60 +14,60 @@ def close(con):
 
 def insert_tuples(cursor):
     #insert instructor
-    query = "INSERT OR IGNORE INTO Instructor (instructorId,firstName,lastName) VALUES (1,'Adel','Ardelan')"
+    query = "INSERT OR IGNORE INTO Course_Instructor (instructorId,firstName,lastName) VALUES (1,'Adel','Ardelan')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Instructor (instructorId,firstName,lastName) VALUES (2,'Colin','Engstrom')"
+    query = "INSERT OR IGNORE INTO Course_Instructor (instructorId,firstName,lastName) VALUES (2,'Colin','Engstrom')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Instructor (instructorId,firstName,lastName) VALUES (3,'Jin-Yi','Cai')"
+    query = "INSERT OR IGNORE INTO Course_Instructor (instructorId,firstName,lastName) VALUES (3,'Jin-Yi','Cai')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Instructor (instructorId,firstName,lastName) VALUES (4,'Beck','Hasti')"
+    query = "INSERT OR IGNORE INTO Course_Instructor (instructorId,firstName,lastName) VALUES (4,'Beck','Hasti')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Instructor (instructorId,firstName,lastName) VALUES (5,'Andrea','Arpaci-Dusseau')"
+    query = "INSERT OR IGNORE INTO Course_Instructor (instructorId,firstName,lastName) VALUES (5,'Andrea','Arpaci-Dusseau')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Instructor (instructorId,firstName,lastName) VALUES (6,'Tracy','Lewis-Williams')"
+    query = "INSERT OR IGNORE INTO Course_Instructor (instructorId,firstName,lastName) VALUES (6,'Tracy','Lewis-Williams')"
     cursor.execute(query)
 
     #insert courses
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Databases','564','CS',1.0,0)"
+    query = "INSERT OR IGNORE INTO Course_Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Databases','564','CS',1.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Artificial Intelligence','540','CS',2.0,0)"
+    query = "INSERT OR IGNORE INTO Course_Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Artificial Intelligence','540','CS',2.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Algorithims','577','CS',3.0,0)"
+    query = "INSERT OR IGNORE INTO Course_Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Algorithims','577','CS',3.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Discrete Math','240','CS',4.0,0)"
+    query = "INSERT OR IGNORE INTO Course_Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Discrete Math','240','CS',4.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Operating Systems','537','CS',5.0,0)"
+    query = "INSERT OR IGNORE INTO Course_Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Operating Systems','537','CS',5.0,0)"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Human Computer Interaction','570','CS',6.0,0)"
+    query = "INSERT OR IGNORE INTO Course_Course (courseName,courseNumber,courseDepartment,averageRating,numberOfRatings) VALUES ('Human Computer Interaction','570','CS',6.0,0)"
     cursor.execute(query)
 
     #insert courseReviews
-    query = "INSERT OR IGNORE INTO CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','564',1,1,'This course was quite difficult. Do not take concurrently with another programming course!',1,5,'')"
+    query = "INSERT OR IGNORE INTO Course_CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','564',1,1,'This course was quite difficult. Do not take concurrently with another programming course!',1,5,'')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','540',2,2,'Easy class. Take and cruise through dudes.',1,6,'')"
+    query = "INSERT OR IGNORE INTO Course_CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','540',2,2,'Easy class. Take and cruise through dudes.',1,6,'')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','577',3,3,'Godspeed, brother.',1,6,'')"
+    query = "INSERT OR IGNORE INTO Course_CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','577',3,3,'Godspeed, brother.',1,6,'')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','240',4,4,'Challenging concepts but doable with enough effort. Make sure you take with the CS department.',1,7,'')"
+    query = "INSERT OR IGNORE INTO Course_CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','240',4,4,'Challenging concepts but doable with enough effort. Make sure you take with the CS department.',1,7,'')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','537',5,5,'One of the better courses at in this department but really a bear. Lots of C programming.',1,4,'')"
+    query = "INSERT OR IGNORE INTO Course_CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','537',5,5,'One of the better courses at in this department but really a bear. Lots of C programming.',1,4,'')"
     cursor.execute(query)
 
-    query = "INSERT OR IGNORE INTO CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','570',6,6,'GPA boosting CS elective lol',1,9,'')"
+    query = "INSERT OR IGNORE INTO Course_CourseReview (courseDepartment,courseNumber,reviewId,instructorId,review,reviewerId,rating,reviewDate) VALUES ('CS','570',6,6,'GPA boosting CS elective lol',1,9,'')"
     cursor.execute(query)
 
 if __name__ == "__main__":

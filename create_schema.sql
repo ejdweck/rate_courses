@@ -1,5 +1,5 @@
 DROP TABLE Instructor;
-CREATE TABLE INSTRUCTOR (
+CREATE TABLE Course_Instructor (
   instructorId INTEGER NOT NULL,
   firstName VARCHAR(30) NOT NULL,
   lastName VARCHAR(30) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE INSTRUCTOR (
 );
 
 DROP TABLE Course;
-CREATE TABLE Course (
+CREATE TABLE Course_Course (
   courseDepartment VARCHAR(30) NOT NULL,
   courseNumber VARCHAR(30) NOT NULL,
   courseName VARCHAR(30) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE Course (
 );
 
 DROP TABLE GradePoint;
-CREATE TABLE GradePoint (
+CREATE TABLE Course_GradePoint (
   courseDepartment VARCHAR(30) NOT NULL,
   courseNumber VARCHAR(30) NOT NULL,
   fallSem15 DOUBLE,
@@ -33,7 +33,7 @@ CREATE TABLE GradePoint (
 );
 
 DROP TABLE CourseReview;
-CREATE TABLE CourseReview (
+CREATE TABLE Course_CourseReview (
   courseDepartment VARCHAR(30) NOT NULL,
   courseNumber VARCHAR(30) NOT NULL,
   reviewId INTEGER NOT NULL,
