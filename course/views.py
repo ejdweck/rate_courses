@@ -20,17 +20,16 @@ def about(request):
 
 def courses(request):
     cursor = connection.cursor()
-    query = 'SELECT * FROM Course'
+    query = 'SELECT * FROM Course_Course'
     cursor.execute(query)
     courses = cursor.fetchall()
     return render(request, 'courses.html', {'courses':courses})
 
 def course_reviews(request):
-    cursor = connection.cursor()
-    #query = 'SELECT Course.courseNumber, Course.courseName, CourseReview.instructorId, CourseReview.review FROM Course, CourseReview WHERE Course.courseNumber = CourseReview.courseNumber'
-    query = ''
-    cursor.execute(query)
-    tuples = cursor.fetchall()
+    tuples = CourseReview.objects.all()
+    for e in tuples:
+        print(e)
+
     return render(request, 'course_reviews.html', {'allcourses': tuples})
 
 def add_course_review(request):
@@ -40,17 +39,16 @@ def add_course_review(request):
         form = AddCourseReviewForm(request.POST)
         if form.is_valid():
             #course = CourseReview.objects.create()
-            course_review = CourseReview(
+            course_review = CourseReview.objects.create(
                 courseDepartment = form.cleaned_data['courseDepartment'],
                 courseNumber = form.cleaned_data['courseNumber'],
                 instructorId = form.cleaned_data['instructor'],
-                reviewId=1,
+                #reviewId=1,
                 reviewerId=1,
                 review = form.cleaned_data['review'],
                 rating = form.cleaned_data['rating'],
                 reviewDate = form.cleaned_data['reviewDate']
             )
-            course_review.save()
 
             return redirect('thanks')
     return render(request, "add_course_review.html", {'form': form})
