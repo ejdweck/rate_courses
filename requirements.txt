@@ -1,0 +1,14 @@
+certifi==2017.11.5
+chardet==3.0.4
+Django==2.0.1
+django-bootstrap4==0.0.5
+idna==2.6
+numpy==1.14.0
+pandas==0.22.0
+python-dateutil==2.6.1
+pytz==2017.3
+requests==2.18.4
+selenium==3.8.1
+six==1.11.0
+urllib3==1.22
+virtualenv==15.1.0

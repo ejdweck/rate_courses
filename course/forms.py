@@ -12,9 +12,14 @@ class AddCourseReviewForm(forms.Form):
         label = 'courseNumber',
         max_length = 32
     )
-    instructor = forms.CharField(
+    instructorFirstName = forms.CharField(
         required = True,
-        label = 'instructor',
+        label = 'instructor first name',
+        max_length = 32
+    )
+    instructorLastName = forms.CharField(
+        required = True,
+        label = 'instructor last name',
         max_length = 32
     )
     review = forms.CharField(
