@@ -11,7 +11,7 @@ CREATE TABLE Course_Course (
   courseDepartment VARCHAR(30) NOT NULL,
   courseNumber VARCHAR(30) NOT NULL,
   courseName VARCHAR(30) NOT NULL,
-  averageRating DOUBLE, 
+  averageRating REAL, 
   numberOfRatings INTEGER,
   FOREIGN KEY (courseDepartment, courseNumber) REFERENCES GradePoint (courseDepartment, courseNumber)
   ON DELETE CASCADE,

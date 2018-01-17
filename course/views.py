@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.db import connection
 from course.forms import AddCourseReviewForm
 from course.models import CourseReview, Course, Instructor
+from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -42,20 +43,28 @@ def add_course_review(request):
     else:
         form = AddCourseReviewForm(request.POST)
         if form.is_valid():
-            courseDept = form.cleaned_data['courseDepartment']
-            courseNum = form.cleaned_data['courseNumber']
+            courseDepartment = form.cleaned_data['courseDepartment']
+            courseDepartment = courseDepartment.upper()
+            courseNumber = form.cleaned_data['courseNumber']
+            review = form.cleaned_data['review']
+            rating = form.cleaned_data['rating']
+            reviewDate = form.cleaned_data['reviewDate']
             instructorFirstName = form.cleaned_data['instructorFirstName']
             instructorLastName = form.cleaned_data['instructorLastName']
             avgRating = 0.0
             numRatings = 0
 
+            print(courseDepartment)
+            print(courseNumber)
+
             # check if course already exists in database by querying
-            course = Course.objects.filter(courseDepartment=courseDept,courseNumber=courseNum)
+            course = Course.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber)
 
             # if the course doesn't exist...
             if not course.count():
+
                 # create course
-                new_course = Course.objects.create(courseDepartment=courseDept,courseNumber=courseNum,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
+                new_course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
 
                 # create Instructor tuple if new instructor
                 new_instructor = Instructor.objects.filter(firstName=instructorFirstName)
@@ -64,11 +73,8 @@ def add_course_review(request):
                 currentUser = request.user
                 currentUserId = currentUser.id
 
-                # find out the info needed to see if we need to create a new instructor
-                instructorFirstName = form.cleaned_data['instructorFirstName']
-                instructorLastName = form.cleaned_data['instructorLastName']
-
                 try:
+                    # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
                     instructorId = instructor.instructorId
                 except ObjectDoesNotExist:
@@ -78,27 +84,34 @@ def add_course_review(request):
                         lastName=instructorLastName
                         )
                     instructorId = newInstructor.instructorId
-
+                
                 # add the course review
                 courseReview = CourseReview.objects.create(
-                    courseDepartment = form.cleaned_data['courseDepartment'],
-                    courseNumber = form.cleaned_data['courseNumber'],
+                    courseDepartment = courseDepartment,
+                    courseNumber = courseNumber,
                     instructorId = instructorId,
                     reviewerId = currentUserId,
-                    review = form.cleaned_data['review'],
-                    rating = form.cleaned_data['rating'],
-                    reviewDate = form.cleaned_data['reviewDate']
-                )
+                    review = review,
+                    rating = rating,
+                    reviewDate = reviewDate 
+                ) 
+
+                # generate the course rating
+                courseRatingAvg = CourseReview.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).aggregate(Avg('rating'))
+                # update courses avg rating
+                course = Course.objects.get(courseDepartment=courseDepartment,courseNumber=courseNumber)
+                course.averageRating = float(courseRatingAvg.get(1))
+                # update number of reviews by adding 1
+                course.numberOfRatings += 1
+                # commit the changes
+                course.save()
+
             else:
                 # get the userId for the user leaving the review
                 currentUser = request.user
                 currentUserId = currentUser.id
-
-                 # find out the info needed to see if we need to create a new instructor
-                instructorFirstName = form.cleaned_data['instructorFirstName']
-                instructorLastName = form.cleaned_data['instructorLastName']
-
                 try:
+                    # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
                     instructorId = instructor.instructorId
                 except ObjectDoesNotExist:
@@ -111,16 +124,25 @@ def add_course_review(request):
 
                 # if course exists, just add course on the id of the instructor from instructor table
                 courseReview = CourseReview.objects.create(
-                    courseDepartment = form.cleaned_data['courseDepartment'],
-                    courseNumber = form.cleaned_data['courseNumber'],
+                    courseDepartment = courseDepartment,
+                    courseNumber = courseNumber,
                     instructorId = instructorId,
-                    reviewerId=currentUserId,
-                    review = form.cleaned_data['review'],
-                    rating = form.cleaned_data['rating'],
-                    reviewDate = form.cleaned_data['reviewDate']
+                    reviewerId = currentUserId,
+                    review = review,
+                    rating = rating,
+                    reviewDate = reviewDate 
                 )
 
-            #return redirect('thanks')
+                # generate the course rating
+                courseRatingAvg = CourseReview.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).aggregate(Avg('rating'))
+                # update courses avg rating
+                course = Course.objects.get(courseDepartment=courseDepartment,courseNumber=courseNumber)
+                course.averageRating = courseRatingAvg['rating__avg']
+                # update number of reviews by adding 1
+                course.numberOfRatings += 1
+                # commit the changes
+                course.save()
+
             return render(request, "submission.html")
     return render(request, "add_course_review.html", {'form': form})
 

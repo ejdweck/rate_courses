@@ -5,16 +5,16 @@
 	<h2>Course Reviews</h2>
 	<div class="card-deck">
 	 {% for course in course_reviews %}
-	 {{course}}
 	    <div class="card border-dark mb-3" id="card_box">
-	    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
+	    	<div class="card-header">{{course.0}}: {{course.1}}</div>
 		    <div class="card-body text-dark">
-		      <h4 class="card-title">{{course.Name}}</h4>
-		      <p class="card-text">{{course.instructorId}}</p>
-		      <p class="card-text">{{course.review}}</p>
+		      <h4 class="card-title">{{course.}}</h4>
+		      <p class="card-text">Instructor: {{course.9}} {{course.10}}</p>
+		      <p class="card-text">Review: {{course.5}}</p>
+		      <p class="card-text">Rating: {{course.6}}</p>
 		    </div>
 		    <div class="card-footer">
-		      <small class="text-muted">Last updated 3 mins ago</small>
+		      <small class="text-muted">Last updated {{course.7}}</small>
 		    </div>
 		 </div>
 	  {% endfor %}
