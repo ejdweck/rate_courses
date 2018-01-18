@@ -1,10 +1,60 @@
 {% extends 'index.html' %}
 {% block content %}
+<script>
+$(function() {
+
+var courseDeptAndNumber = [
+  {% for course in courses %}
+      "{{ course.courseDepartment}}{{course.courseNumber}}" {% if not forloop.last %},{% endif %}
+   {% endfor %}
+];
+
+var courseDeptNames = [
+   {% for course in courses %}
+   		"{{ course.courseDepartment}}" {% if not forloop.last %},{% endif %}
+   {% endfor %}
+];
+
+var courseNumbers = [
+   {% for course in courses %}
+   		"{{ course.courseNumber}}" {% if not forloop.last %},{% endif %}
+   {% endfor %}
+];
+
+var instructorNames = [
+   {% for name in instructorNames %}
+      "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
+   {% endfor %}
+];
+
+$( "#courseDepartmentAndNumber" ).autocomplete({
+  source: courseDeptAndNumber
+});
+
+$( "#courseDepartment" ).autocomplete({
+  source: courseDeptNames
+});
+
+$( "#courseNumber" ).autocomplete({
+  source: courseNumbers
+});
+
+$( "#instructorName" ).autocomplete({
+  source: instructorNames
+});
+
+});
+
+</script>
 <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <div class="form-actions">
-      <button type="submit">Send</button>
+	<div class="add-course-review-form">
+		<div class="form-box">
+		    {% csrf_token %}
+		    {{ form.as_p }}
+		    <div class="form-actions">
+		      <button type="submit">Send</button>
+		    </div>
+	    </div>
     </div>
 </form>
 {% endblock %}

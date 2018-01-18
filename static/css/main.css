@@ -19,3 +19,35 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
 
+/* Add Course Form CSS */
+
+.add-course-review-form {
+	background-color: #b0b3b7;
+    width: 40%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-top: 5%;
+    margin-left: 30%;
+    margin-right: 30%;
+    border-collapse: separate;
+}
+
+.form-box {
+	text-align: center;
+}
+
+body .ui-autocomplete {
+  /* font-family to all */
+}
+
+body .ui-state-hover {
+	background: #428BCA!important;
+}
+
+body .ui-autocomplete .ui-menu-item .ui-corner-all {
+   /* all <a> */
+}
+
+body .ui-autocomplete .ui-menu-item .ui-state-focus {
+   /* selected <a> */
+}

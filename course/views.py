@@ -7,8 +7,7 @@ from course.models import CourseReview, Course, Instructor
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-
-#django.core.exceptions
+import datetime
 
 def homepage(request):
     cursor = connection.cursor()
@@ -39,23 +38,41 @@ def course_reviews(request):
 
 def add_course_review(request):
     if request.method == 'GET':
-        form = AddCourseReviewForm()
+        form = AddCourseReviewForm(auto_id=True)
     else:
-        form = AddCourseReviewForm(request.POST)
+        form = AddCourseReviewForm(request.POST,auto_id=True)
         if form.is_valid():
-            courseDepartment = form.cleaned_data['courseDepartment']
+            #courseDepartment = form.cleaned_data['courseDepartment']
+            # parse course department and course number from single field on form
+            courseDepartmentIndex = 0
+            courseDepartmentAndNumber = form.cleaned_data['courseDepartmentAndNumber']
+            for c in range(len(courseDepartmentAndNumber)):
+                if (courseDepartmentAndNumber[c].isdigit()):
+                    courseDepartmentIndex = c
+                    break;
+
+            courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
+            # force courseDepartment to uppercase letters for consistency in database
             courseDepartment = courseDepartment.upper()
-            courseNumber = form.cleaned_data['courseNumber']
+            courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
+
+            #courseNumber = form.cleaned_data['courseNumber']
             review = form.cleaned_data['review']
             rating = form.cleaned_data['rating']
-            reviewDate = form.cleaned_data['reviewDate']
-            instructorFirstName = form.cleaned_data['instructorFirstName']
-            instructorLastName = form.cleaned_data['instructorLastName']
+            print(rating)
+            reviewDate = datetime.datetime.today()
+
+            # parse instructor first name and last name into individual fields
+            instructorName = form.cleaned_data['instructorName']
+            names = instructorName.split()
+            instructorFirstName = "" 
+            instructorLastName = ""
+            if (len(names) > 2):
+                instructorFirstName = names[0]
+                instructorLastName = names[1]
+
             avgRating = 0.0
             numRatings = 0
-
-            print(courseDepartment)
-            print(courseNumber)
 
             # check if course already exists in database by querying
             course = Course.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber)
@@ -66,9 +83,6 @@ def add_course_review(request):
                 # create course
                 new_course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
 
-                # create Instructor tuple if new instructor
-                new_instructor = Instructor.objects.filter(firstName=instructorFirstName)
-
                 # get the userId for the user leaving the review
                 currentUser = request.user
                 currentUserId = currentUser.id
@@ -78,7 +92,7 @@ def add_course_review(request):
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
                     instructorId = instructor.instructorId
                 except ObjectDoesNotExist:
-                    # add new instructor 
+                    # create Instructor tuple if new instructor
                     newInstructor = Instructor.objects.create(
                         firstName=instructorFirstName,
                         lastName=instructorLastName
@@ -100,7 +114,7 @@ def add_course_review(request):
                 courseRatingAvg = CourseReview.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).aggregate(Avg('rating'))
                 # update courses avg rating
                 course = Course.objects.get(courseDepartment=courseDepartment,courseNumber=courseNumber)
-                course.averageRating = float(courseRatingAvg.get(1))
+                course.averageRating = courseRatingAvg['rating__avg']
                 # update number of reviews by adding 1
                 course.numberOfRatings += 1
                 # commit the changes
@@ -144,7 +158,12 @@ def add_course_review(request):
                 course.save()
 
             return render(request, "submission.html")
-    return render(request, "add_course_review.html", {'form': form})
+    # get courses for auto complete
+    courses = Course.objects.all()
+    # get instructors names for auto complete
+    instructorNames = Instructor.objects.all()
+
+    return render(request, "add_course_review.html", {'form': form, 'courses': courses, 'instructorNames': instructorNames})
 
 def signup(request):
     if request.method == 'POST':
@@ -159,3 +178,16 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+def search(request):
+    if request.method == 'GET': # If the form is submitted
+        search_query = request.GET.get('searchbox')
+        # Do whatever you need with the word the user looked for
+        dept = search_query.upper()
+        courses = CourseReview.objects.filter(courseDepartment=dept)
+        print (dept)
+        print(courses)
+        for c in courses:
+            print(c)
+        return render(request, 'search.html', {'courses':courses})
+    # Your code
