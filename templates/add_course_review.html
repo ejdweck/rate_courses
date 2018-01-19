@@ -9,20 +9,8 @@ var courseDeptAndNumber = [
    {% endfor %}
 ];
 
-var courseDeptNames = [
-   {% for course in courses %}
-   		"{{ course.courseDepartment}}" {% if not forloop.last %},{% endif %}
-   {% endfor %}
-];
-
-var courseNumbers = [
-   {% for course in courses %}
-   		"{{ course.courseNumber}}" {% if not forloop.last %},{% endif %}
-   {% endfor %}
-];
-
 var instructorNames = [
-   {% for name in instructorNames %}
+   {% for name in instructors %}
       "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
    {% endfor %}
 ];
@@ -31,13 +19,6 @@ $( "#courseDepartmentAndNumber" ).autocomplete({
   source: courseDeptAndNumber
 });
 
-$( "#courseDepartment" ).autocomplete({
-  source: courseDeptNames
-});
-
-$( "#courseNumber" ).autocomplete({
-  source: courseNumbers
-});
 
 $( "#instructorName" ).autocomplete({
   source: instructorNames

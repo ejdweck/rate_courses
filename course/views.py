@@ -59,7 +59,8 @@ def add_course_review(request):
             #courseNumber = form.cleaned_data['courseNumber']
             review = form.cleaned_data['review']
             rating = form.cleaned_data['rating']
-            print(rating)
+
+            # set the review date to the current day
             reviewDate = datetime.datetime.today()
 
             # parse instructor first name and last name into individual fields
@@ -67,7 +68,7 @@ def add_course_review(request):
             names = instructorName.split()
             instructorFirstName = "" 
             instructorLastName = ""
-            if (len(names) > 2):
+            if (len(names) >= 2):
                 instructorFirstName = names[0]
                 instructorLastName = names[1]
 
@@ -79,7 +80,6 @@ def add_course_review(request):
 
             # if the course doesn't exist...
             if not course.count():
-
                 # create course
                 new_course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
 
@@ -161,9 +161,9 @@ def add_course_review(request):
     # get courses for auto complete
     courses = Course.objects.all()
     # get instructors names for auto complete
-    instructorNames = Instructor.objects.all()
+    instructors = Instructor.objects.all()
 
-    return render(request, "add_course_review.html", {'form': form, 'courses': courses, 'instructorNames': instructorNames})
+    return render(request, "add_course_review.html", {'form': form, 'courses': courses, 'instructors': instructors})
 
 def signup(request):
     if request.method == 'POST':
@@ -182,11 +182,27 @@ def signup(request):
 def search(request):
     if request.method == 'GET': # If the form is submitted
         search_query = request.GET.get('searchbox')
-        # Do whatever you need with the word the user looked for
-        dept = search_query.upper()
-        courses = CourseReview.objects.filter(courseDepartment=dept)
-        print (dept)
-        print(courses)
+        # parse user input into course department and course number
+        courseDepartmentAndNumber = search_query.upper()
+        courseDepartmentIndex = 0
+        for c in range(len(courseDepartmentAndNumber)):
+            courseDepartmentIndex = c
+            print(courseDepartmentIndex)
+            if (courseDepartmentAndNumber[c].isdigit()):
+                break;
+
+        courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
+        # force courseDepartment to uppercase letters for consistency in database
+        courseDepartment = courseDepartment.upper()
+        courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
+        # find the course reviews that match the course department and course number entered exactly
+        courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment, courseNumber__contains=courseNumber)
+
+        # if for there is no record of a course a user searched, return a list of all course reviews that match the department
+        if not courses:
+            courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment)
+
+        print(courseDepartment)
         for c in courses:
             print(c)
         return render(request, 'search.html', {'courses':courses})
