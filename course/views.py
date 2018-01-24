@@ -163,7 +163,8 @@ def add_course_review(request):
     # get instructors names for auto complete
     instructors = Instructor.objects.all()
 
-    return render(request, "add_course_review.html", {'form': form, 'courses': courses, 'instructors': instructors})
+    return render(request, "add_course_review_form.html", {'form': form, 'courses': courses, 'instructors': instructors})
+    #return render(request, "add_course_review.html", {'form': form, 'courses': courses, 'instructors': instructors})
 
 def signup(request):
     if request.method == 'POST':

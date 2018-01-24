@@ -39,7 +39,7 @@ CREATE TABLE Course_CourseReview (
   reviewId INTEGER NOT NULL,
   instructorId INTEGER NOT NULL,
   reviewerId INTEGER NOT NULL,
-  review VARCHAR(100) NOT NULL,
+  review VARCHAR(180) NOT NULL,
   rating INTEGER NOT NULL,
   reviewDate DATE NOT NULL,
   FOREIGN KEY (courseDepartment, courseNumber) REFERENCES Course (courseDepartment, courseNumber)

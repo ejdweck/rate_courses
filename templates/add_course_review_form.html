@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% load widget_tweaks %}
+{% block content %}
+
+<p id="rcorners1" class="w3-theme">Rounded corners!</p>
+<div id="RGB">
+	<br>
+	<div class="container">
+	   <div class="col-md-6">
+	      {% render_field form.courseDepartmentAndNumber class+="form-control courseDepartmentAndNumber" placeholder="department and course number" %}
+	   </div>
+	   <div class="col-md-6">
+	      {% render_field form.instructorName class+="form-control instructorName" placeholder="instructors first and last name" %}
+	   </div>
+	   <div class="col-md-6">
+	      {% render_field form.rating class+="form-control rating" placeholder="" %}
+	   </div>
+	    <div class="col-md-6">
+	      {% render_field form.review class+="form-control review" placeholder="any comments about the course" %}
+	   </div>
+	   <div class="col-md-6">
+		 <button type="submit">Send</button>
+	   </div>   		     
+	</div>
+</div>
+{% endblock %}
