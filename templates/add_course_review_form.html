@@ -2,7 +2,65 @@
 
 {% load widget_tweaks %}
 {% block content %}
-<div class="form-box">
+<script>
+$(function() {
+
+var courseDeptAndNumber = [
+  {% for course in courses %}
+      "{{ course.courseDepartment}}{{course.courseNumber}}" {% if not forloop.last %},{% endif %}
+   {% endfor %}
+];
+
+var instructorNames = [
+   {% for name in instructors %}
+      "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
+   {% endfor %}
+];
+
+$( "#courseDepartmentAndNumber" ).autocomplete({
+  source: courseDeptAndNumber
+});
+
+$( "#instructorName" ).autocomplete({
+  source: instructorNames
+});
+
+});
+
+$(function() {
+	var rating = $('#ratingSlider').val();
+	console.log(rating)
+});
+
+$(document).on('input', '#rating', function() {
+    $('#slider_value').html( $(this).val() );
+    switch($(this).val()) {
+    case "1":
+        break;
+    case "2":
+        break;
+    case "3":
+        break;
+    case "4":
+        break;
+    case "5":
+        break;
+    case "6":
+        break;
+    case "7":
+        break;
+    case "8":
+        break;
+    case "9":
+        break;
+    case "10":
+        break;
+    default:
+	}
+});
+
+</script>
+<div class="form-box add-course-review-form">
 	<form method="post">
 		{% csrf_token %}
 		<div class="container addCourseReviewForm">
@@ -20,15 +78,16 @@
 			    <div class="col">
 			    	<label for="instructorName">Instructor Name</label>
 			      	{% render_field form.instructorName id+="instructorName" class+="form-control instructorName" placeholder="Eric Clapton" %}
-		    	    <small id="instructorName" class="form-text text-muted">Seperate first and last name by whitespace</small>
+		    	    <small id="instructorName" class="form-text text-muted">Seperate first and last name by whitespace.</small>
 			    </div>
 			</div>
 			<br>
 			<div class=row>
 			    <div class="col">
-			    	<label for="rating">Rating</label>
+			    	<label id="ratingSlider" for="rating">Rating</label>
 			      	{% render_field form.rating id+="rating" class+="form-control rating" placeholder="" %}
-		    	    <small id="rating" class="form-text text-muted">Rate from 1 to 10</small>
+		      	    <span id="slider_value">5</span>
+		    	    <small id="rating" class="form-text text-muted">Rate from 1 to 10.</small>
 			    </div>
 			</div>
 			<br>
@@ -36,7 +95,7 @@
 			    <div class="col">
 			    	<label for="comments">Comments</label>
 			      	{% render_field form.review id+="comments" class+="form-control review" placeholder="any comments about the course" %}
-		    	    <small id="comments" class="form-text text-muted">Enter the course code exactly as it appears in the course guide - reviews with an incorrect course number may be subject to removal.</small>
+		    	    <small id="comments" class="form-text text-muted">Any comments to justify your rating. Common topics to include are instructor difficulty or hours spent per week.</small>
 			    </div>
 			</div>
 			<br>
