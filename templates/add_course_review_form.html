@@ -2,31 +2,52 @@
 
 {% load widget_tweaks %}
 {% block content %}
-
-<p id="rcorners1" class="w3-theme">Rounded corners!</p>
-<div id="RGB">
-	<br>
-	<div class="form-box">
-		<form method="post">
-			{% csrf_token %}
-			<div class="container">
-			   <div class="col-md-6">
-			      {% render_field form.courseDepartmentAndNumber class+="form-control courseDepartmentAndNumber" placeholder="department and course number" %}
-			   </div>
-			   <div class="col-md-6">
-			      {% render_field form.instructorName class+="form-control instructorName" placeholder="instructors first and last name" %}
-			   </div>
-			   <div class="col-md-6">
-			      {% render_field form.rating class+="form-control rating" placeholder="" %}
-			   </div>
-			    <div class="col-md-6">
-			      {% render_field form.review class+="form-control review" placeholder="any comments about the course" %}
-			   </div>
-			   	<div class="form-actions">
-				      <button type="submit">Send</button>
+<div class="form-box">
+	<form method="post">
+		{% csrf_token %}
+		<div class="container addCourseReviewForm">
+			<h3 id="formTitle">Add a course review and help your fellow classmates!</h3>
+			<br>
+			<div class=row>
+				<div class="col">
+			    	<label for="courseDepartmentAndNumber">Course Code</label>
+			    	{% render_field form.courseDepartmentAndNumber id+="courseDepartmentAndNumber" class+="form-control courseDepartmentAndNumber" placeholder="cs537" %}
+		    	    <small id="courseDepartmentAndNumber" class="form-text text-muted">Enter the course code exactly as it appears in the course guide - reviews with an incorrect course number may be subject to removal.</small>
+			   	</div>
+			</div>
+			<br>
+			<div class=row>
+			    <div class="col">
+			    	<label for="instructorName">Instructor Name</label>
+			      	{% render_field form.instructorName id+="instructorName" class+="form-control instructorName" placeholder="Eric Clapton" %}
+		    	    <small id="instructorName" class="form-text text-muted">Seperate first and last name by whitespace</small>
 			    </div>
 			</div>
-		</form>
-	</div>
+			<br>
+			<div class=row>
+			    <div class="col">
+			    	<label for="rating">Rating</label>
+			      	{% render_field form.rating id+="rating" class+="form-control rating" placeholder="" %}
+		    	    <small id="rating" class="form-text text-muted">Rate from 1 to 10</small>
+			    </div>
+			</div>
+			<br>
+			<div class=row>
+			    <div class="col">
+			    	<label for="comments">Comments</label>
+			      	{% render_field form.review id+="comments" class+="form-control review" placeholder="any comments about the course" %}
+		    	    <small id="comments" class="form-text text-muted">Enter the course code exactly as it appears in the course guide - reviews with an incorrect course number may be subject to removal.</small>
+			    </div>
+			</div>
+			<br>
+			<div class=row>
+			    <div class="col">
+				   	<div class="form-actions">
+					      <button class="btn-primary" type="submit">Send</button>
+				    </div>
+			    </div>
+			</div>
+		</div>
+	</form>
 </div>
 {% endblock %}

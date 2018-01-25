@@ -54,6 +54,13 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 
 
 /* CSS for the forms */
+.addCourseReviewForm {
+	padding: 5% 5% 5% 5%;
+}
+
+#formTitle {
+	text-align: center;
+}
 
 #RGB {
 	height: 20px;
