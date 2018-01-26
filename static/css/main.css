@@ -114,3 +114,17 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 /* about page rules */
 .about-list {
 }
+
+/* background color */
+body {
+	background-color: #ededed;
+}
+
+/* rules for registration forms */
+#login-fields {
+	text-align: center;
+}
+
+
+
+

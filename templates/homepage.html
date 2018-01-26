@@ -14,22 +14,24 @@
 	        <button value="Search" type="text" id="search-submit" class="btn btn-secondary">Search</a>
 	      </span>
 	    </div>
+        <small id="help" class="form-text text-muted">Confused about ratings or card colors? Check out the <a href="{% url 'about' %}">about page</a> </small>
 	</form>
   </div>
 </div>
 <br>
 <div class="container"> 
-	<h2>Recently Reviewed Courses</h2>
+	<h2>Recent Course Reviews</h2>
 	<div class="card-deck">
-	 {% for course in reviews %}
-	    <div class="card border-dark mb-3" id="card_box">
-	    	<div class="card-header">	Professor: {{course.2}} {{course.3}}</div>
+	 {% for course in course_reviews %}
+	    <div class="card border-dark mb-3 color{{course.6}}" id="card_box">
+	    	<div class="card-header">{{course.0}}: {{course.1}}</div>
 		    <div class="card-body text-dark">
-		      <h4 class="card-title">{{course.0}}: {{course.1}}</h4>
-		      <p class="card-text">{{course.4}}</p>
+		        <p class="card-text">Instructor: {{course.9}} {{course.10}}</p>
+		        <p class="card-text">Review: {{course.5}}</p>
+		        <p id="cardRating" class="card-text">Rating: {{course.6}}</p>
 		    </div>
 		    <div class="card-footer">
-		      <small class="text-muted">Last updated 3 mins ago</small>
+		      <small class="text-dark">Reviewed on {{course.7}}</small>
 		    </div>
 		 </div>
 	  {% endfor %}

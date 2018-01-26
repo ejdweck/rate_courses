@@ -2,6 +2,20 @@
 
 {% block content %}
 <br>
+<div class="row">
+  <div class="container">
+  	<form method="get" action="/search/" role="search">
+	    <div class="input-group">
+	      <input type="text" class="form-control" placeholder="Search for a course review by course or instructor" name="searchbox">
+	      <span class="input-group-btn">
+	        <button value="Search" type="text" id="search-submit" class="btn btn-secondary">Search</a>
+	      </span>
+	    </div>
+        <small id="help" class="form-text text-muted">Confused about ratings or card colors? Check out the <a href="{% url 'about' %}">about page</a> </small>
+	</form>
+  </div>
+</div>
+<br>
 <div class="container"> 
 	<h2>Courses offered at UW Madison</h2>
 	<div class="card-deck">

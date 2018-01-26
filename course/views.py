@@ -11,11 +11,10 @@ import datetime
 
 def homepage(request):
     cursor = connection.cursor()
-    #query = 'SELECT Course.courseNumber, Course.courseName, Instructor.firstName, Instructor.lastName, CourseReview.review FROM Course, Instructor, CourseReview WHERE Course.courseId = CourseReview.courseId AND Instructor.professorID = CourseReview.professorId'
-    query = ''
+    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC LIMIT 9'
     cursor.execute(query)
-    reviews = cursor.fetchall()
-    return render(request, 'homepage.html', {'reviews': reviews})
+    course_reviews = cursor.fetchall()
+    return render(request, 'homepage.html', {'course_reviews': course_reviews})
 
 def about(request):
     return render(request, 'about.html')
@@ -29,7 +28,7 @@ def courses(request):
 
 def course_reviews(request):
     cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId'
+    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC'
     #coursereviews = CourseReview.objects.filter(instructorId=1)
     #print(coursereviews.instructorFirstName)
     cursor.execute(query)
@@ -211,6 +210,8 @@ def search(request):
         if not courses:
             courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment)
         '''
+
+        # Search for courses
         cursor = connection.cursor()
         query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'" + " AND course_course.coursenumber= " + "'" + courseNumber + "'"
         print(query)
@@ -221,5 +222,16 @@ def search(request):
             query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'"
             cursor.execute(query)
             courses = cursor.fetchall()
-        return render(request, 'search.html', {'courses':courses})
+
+        #Search for individual course reviews
+        cursor = connection.cursor()
+        query = ""
+        cursor.execute(query)
+        course_reviews = cursor.fetchall()
+        print (course_reviews)
+        if(not course_reviews):
+            query = ""
+            cursor.execute(query)
+            course_reviews = cursor.fetchall()
+        return render(request, 'search.html', {'courses':courses, 'course_reviews':course_reviews})
     # Your code
