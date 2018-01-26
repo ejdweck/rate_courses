@@ -3,7 +3,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Rate Courses</title>
+    <title>¯\_(ツ)_/¯</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,27 +23,24 @@
 
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/">Rate Courses</a>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+      <a class="navbar-brand" href="/">[Cool Name for this Web Application]</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-item nav-link active" href="{% url 'about' %}">About<span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="{% url 'courses' %}">Courses</a>
-          <a class="nav-item nav-link" href="{% url 'course_reviews' %}">Course Reviews</a>
+          <a class="nav-item nav-link" href="{% url 'courses' %}">All Courses</a>
+          <a class="nav-item nav-link" href="{% url 'course_reviews' %}">All Course Reviews</a>
           <a class="nav-item nav-link" href="{% url 'add_course_review' %}">Add a Course Review</a>
 
           <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
           <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-          <a class="nav-item nav-link" href="{% url 'signup' %}">Signup</a>
+          <a class="nav-item nav-link" href="{% url 'signup' %}">Register</a>
         </div>
       </div>
-      <form class="form-inline">
-        <input class="form-control mr-sm-4" type="search" placeholder="Search for a course or professor" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      
     </nav>
 
     <!-- Optional JavaScript -->
