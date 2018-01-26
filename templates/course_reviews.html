@@ -1,47 +1,20 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<script>
-var rating = $('#cardRating').text()
-switch(rating) {
-case "1":
-    break;
-case "2":
-    break;
-case "3":
-    break;
-case "4":
-    break;
-case "5":
-	$("#card_box").css("background-color", "blue");
-    break;
-case "6":
-    break;
-case "7":
-    break;
-case "8":
-    break;
-case "9":
-    break;
-case "10":
-    break;
-default:
-}
-</script>
+<br>
 <div class="container"> 
 	<h2>Course Reviews</h2>
 	<div class="card-deck">
 	 {% for course in course_reviews %}
-	    <div class="card border-dark mb-3" id="card_box">
+	    <div class="card border-dark mb-3 color{{course.6}}" id="card_box">
 	    	<div class="card-header">{{course.0}}: {{course.1}}</div>
 		    <div class="card-body text-dark">
-		      <h4 class="card-title">{{course.}}</h4>
-		      <p class="card-text">Instructor: {{course.9}} {{course.10}}</p>
-		      <p class="card-text">Review: {{course.5}}</p>
-		      <p id="cardRating" class="card-text">Rating: {{course.6}}</p>
+		        <p class="card-text">Instructor: {{course.9}} {{course.10}}</p>
+		        <p class="card-text">Review: {{course.5}}</p>
+		        <p id="cardRating" class="card-text">Rating: {{course.6}}</p>
 		    </div>
 		    <div class="card-footer">
-		      <small class="text-muted">Last updated {{course.7}}</small>
+		      <small class="text-dark">Reviewed on {{course.7}}</small>
 		    </div>
 		 </div>
 	  {% endfor %}

@@ -61,3 +61,52 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 #formTitle {
 	text-align: center;
 }
+
+/* colors for cards css */
+.color10 {
+	background-color: #ffffff;
+}
+
+.color9 {
+	background-color: #ffe6e6;
+}
+
+.color8 {
+	background-color: #ffcccc;
+}
+
+.color7 {
+	background-color: #ffb3b3;
+}
+
+.color6 {
+	background-color: #ff9999;
+}
+
+.color5 {
+	background-color: #ff8080;
+}
+
+.color4 {
+	background-color: #ff6666;
+}
+
+.color3 {
+	background-color: #ff4d4d;
+}
+
+.color2 {
+	background-color: #ff3333;
+}
+
+.color1 {
+	background-color: #ff1a1a;
+}
+
+.color0 {
+	background-color: #ff0000;
+}
+
+.body {
+	background-color: grey;
+}

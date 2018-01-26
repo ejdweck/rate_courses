@@ -186,25 +186,40 @@ def search(request):
         # parse user input into course department and course number
         courseDepartmentAndNumber = search_query.upper()
         courseDepartmentIndex = 0
-        for c in range(len(courseDepartmentAndNumber)):
-            courseDepartmentIndex = c
-            print(courseDepartmentIndex)
-            if (courseDepartmentAndNumber[c].isdigit()):
-                break;
+        if(len(courseDepartmentAndNumber) > 4):
+            for c in range(len(courseDepartmentAndNumber)):
+                courseDepartmentIndex = c
+                print(courseDepartmentIndex)
+                if (courseDepartmentAndNumber[c].isdigit()):
+                    break;
+                else:
+                    courseDepartmentIndex = len(courseDepartmentAndNumber)
+            courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
+            # force courseDepartment to uppercase letters for consistency in database
+            courseDepartment = courseDepartment.upper()
+            courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
+        else:
+            courseDepartment = courseDepartmentAndNumber
+            courseNumber = ""
 
-        courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
-        # force courseDepartment to uppercase letters for consistency in database
-        courseDepartment = courseDepartment.upper()
-        courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
+        #TODO - change to django querysets
+        '''
         # find the course reviews that match the course department and course number entered exactly
         courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment, courseNumber__contains=courseNumber)
 
         # if for there is no record of a course a user searched, return a list of all course reviews that match the department
         if not courses:
             courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment)
-
-        print(courseDepartment)
-        for c in courses:
-            print(c)
+        '''
+        cursor = connection.cursor()
+        query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'" + " AND course_course.coursenumber= " + "'" + courseNumber + "'"
+        print(query)
+        cursor.execute(query)
+        courses = cursor.fetchall()
+        print(courses)
+        if (not courses):
+            query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'"
+            cursor.execute(query)
+            courses = cursor.fetchall()
         return render(request, 'search.html', {'courses':courses})
     # Your code
