@@ -26,4 +26,4 @@ lib64
 *.pyc
 __pycache__/
 db.sqlite3
-
+data.db
