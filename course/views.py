@@ -79,23 +79,26 @@ def add_course_review(request):
                 currentUser = request.user
                 currentUserId = currentUser.id
 
+                # instructor object to pass into course review as we linked the models via Foreign Keys
+                instructorObject = ""
+
                 try:
                     # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorId = instructor.instructorId
+                    instructorObject = instructor
                 except ObjectDoesNotExist:
                     # create Instructor tuple if new instructor
                     newInstructor = Instructor.objects.create(
                         firstName=instructorFirstName,
                         lastName=instructorLastName
                         )
-                    instructorId = newInstructor.instructorId
+                    instructorObject = newInstructor
                 
                 # add the course review
                 courseReview = CourseReview.objects.create(
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
-                    instructorId = instructorId,
+                    instructorId = instructorObject,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
@@ -116,10 +119,14 @@ def add_course_review(request):
                 # get the userId for the user leaving the review
                 currentUser = request.user
                 currentUserId = currentUser.id
+
+                # instructor object to pass into course review as we linked the models via Foreign Keys
+                instructorObject = ""
+
                 try:
                     # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorId = instructor.instructorId
+                    instructorObject = instructor
                 except ObjectDoesNotExist:
                     # add new instructor 
                     newInstructor = Instructor.objects.create(
@@ -127,16 +134,17 @@ def add_course_review(request):
                         lastName=instructorLastName
                         )
                     instructorId = newInstructor.instructorId
+                    instructorObject = newInstructor
 
                 # if course exists, just add course on the id of the instructor from instructor table
                 courseReview = CourseReview.objects.create(
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
-                    instructorId = instructorId,
+                    instructorId = instructorObject,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
-                    reviewDate = reviewDate 
+                    reviewDate = reviewDate
                 )
 
                 # generate the course rating
