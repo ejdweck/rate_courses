@@ -7,6 +7,7 @@ from course.models import CourseReview, Course, Instructor
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from watson import search as watson
 import datetime
 
 def homepage(request):
@@ -171,6 +172,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            print("in signup")
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
@@ -181,7 +183,9 @@ def signup(request):
 
 def search(request):
     if request.method == 'GET': # If the form is submitted
+        
         search_query = request.GET.get('searchbox')
+        '''
         # parse user input into course department and course number
         courseDepartmentAndNumber = search_query.upper()
         courseDepartmentIndex = 0
@@ -200,7 +204,7 @@ def search(request):
         else:
             courseDepartment = courseDepartmentAndNumber
             courseNumber = ""
-
+        '''
         #TODO - change to django querysets
         '''
         # find the course reviews that match the course department and course number entered exactly
@@ -210,7 +214,7 @@ def search(request):
         if not courses:
             courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment)
         '''
-
+        '''
         # Search for courses
         cursor = connection.cursor()
         query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'" + " AND course_course.coursenumber= " + "'" + courseNumber + "'"
@@ -233,5 +237,9 @@ def search(request):
             query = ""
             cursor.execute(query)
             course_reviews = cursor.fetchall()
+        '''
+        courses = watson.search(search_query)
+        print ("in search")
+        print (courses)
         return render(request, 'search.html', {'courses':courses, 'course_reviews':course_reviews})
     # Your code
