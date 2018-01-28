@@ -19,19 +19,13 @@ def about(request):
     return render(request, 'about.html')
 
 def courses(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM Course_Course'
-    cursor.execute(query)
-    courses = cursor.fetchall()
+
+    courses = Course.objects.all()
     return render(request, 'courses.html', {'courses':courses})
 
 def course_reviews(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC'
-    #coursereviews = CourseReview.objects.filter(instructorId=1)
-    #print(coursereviews.instructorFirstName)
-    cursor.execute(query)
-    course_reviews = cursor.fetchall()
+    course_reviews = CourseReview.objects.all().order_by('reviewDate')
+
     return render(request, 'course_reviews.html', {'course_reviews': course_reviews})
 
 def add_course_review(request):
