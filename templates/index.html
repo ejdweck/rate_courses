@@ -9,27 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <!--
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-      -->
-      <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
-      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script> 
-      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-      <script src="{% static 'js/javascript.js' %}"> </script>
-                
-      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-      <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet">
-      <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- local linked js and css files --> 
+    <script src="{% static 'js/javascript.js' %}"> </script>
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9c9d9e;">
-      <a class="navbar-brand" href="/">[Cool Name for this Web Application]</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      <a class="navbar-brand" href="/">[Cool Name]</a>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
+
           <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
           <a class="nav-item nav-link" href="{% url 'courses' %}">All Courses</a>
           <a class="nav-item nav-link" href="{% url 'course_reviews' %}">All Course Reviews</a>
@@ -38,15 +33,16 @@
           <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
           <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
           <a class="nav-item nav-link" href="{% url 'signup' %}">Register</a>
-        </div>
+       </div>
       </div>
     </nav>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
     {% block content %}
     {% endblock %}
 
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </body>
 </html>
