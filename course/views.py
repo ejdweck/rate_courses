@@ -11,10 +11,8 @@ from watson import search as watson
 import datetime
 
 def homepage(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC LIMIT 9'
-    cursor.execute(query)
-    course_reviews = cursor.fetchall()
+    
+    course_reviews = CourseReview.objects.all().order_by('reviewDate')[:3]
     return render(request, 'homepage.html', {'course_reviews': course_reviews})
 
 def about(request):
