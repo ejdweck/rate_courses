@@ -32,7 +32,7 @@ class CourseReview(models.Model):
 	courseDepartment = models.CharField(max_length=3)
 	courseNumber = models.CharField(max_length=3)
 	reviewId = models.AutoField(primary_key=True)
-	instructorId = models.IntegerField()
+	instructorId = models.ForeignKey(Instructor, on_delete = models.CASCADE)
 	reviewerId = models.IntegerField()
 	review = models.CharField(max_length=50)
 	rating = models.IntegerField()

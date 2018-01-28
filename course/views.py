@@ -188,8 +188,8 @@ def search(request):
         courses = watson.filter(Course, search_query)
         course_reviews = watson.filter(CourseReview, search_query)
        
-        for c in courses:
-            print(c.courseNumber)
+        for c in course_reviews:
+            print(c.instructorId.lastName)
         
         print ("in search")
         print (courses)
