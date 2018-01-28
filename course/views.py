@@ -19,19 +19,13 @@ def about(request):
     return render(request, 'about.html')
 
 def courses(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM Course_Course'
-    cursor.execute(query)
-    courses = cursor.fetchall()
+
+    courses = Course.objects.all()
     return render(request, 'courses.html', {'courses':courses})
 
 def course_reviews(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC'
-    #coursereviews = CourseReview.objects.filter(instructorId=1)
-    #print(coursereviews.instructorFirstName)
-    cursor.execute(query)
-    course_reviews = cursor.fetchall()
+    course_reviews = CourseReview.objects.all().order_by('reviewDate')
+
     return render(request, 'course_reviews.html', {'course_reviews': course_reviews})
 
 def add_course_review(request):
@@ -85,23 +79,26 @@ def add_course_review(request):
                 currentUser = request.user
                 currentUserId = currentUser.id
 
+                # instructor object to pass into course review as we linked the models via Foreign Keys
+                instructorObject = ""
+
                 try:
                     # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorId = instructor.instructorId
+                    instructorObject = instructor
                 except ObjectDoesNotExist:
                     # create Instructor tuple if new instructor
                     newInstructor = Instructor.objects.create(
                         firstName=instructorFirstName,
                         lastName=instructorLastName
                         )
-                    instructorId = newInstructor.instructorId
+                    instructorObject = newInstructor
                 
                 # add the course review
                 courseReview = CourseReview.objects.create(
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
-                    instructorId = instructorId,
+                    instructorId = instructorObject,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
@@ -122,10 +119,14 @@ def add_course_review(request):
                 # get the userId for the user leaving the review
                 currentUser = request.user
                 currentUserId = currentUser.id
+
+                # instructor object to pass into course review as we linked the models via Foreign Keys
+                instructorObject = ""
+
                 try:
                     # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorId = instructor.instructorId
+                    instructorObject = instructor
                 except ObjectDoesNotExist:
                     # add new instructor 
                     newInstructor = Instructor.objects.create(
@@ -133,16 +134,17 @@ def add_course_review(request):
                         lastName=instructorLastName
                         )
                     instructorId = newInstructor.instructorId
+                    instructorObject = newInstructor
 
                 # if course exists, just add course on the id of the instructor from instructor table
                 courseReview = CourseReview.objects.create(
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
-                    instructorId = instructorId,
+                    instructorId = instructorObject,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
-                    reviewDate = reviewDate 
+                    reviewDate = reviewDate
                 )
 
                 # generate the course rating

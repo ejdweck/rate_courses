@@ -21,12 +21,12 @@
 	<h2>Courses offered at UW Madison</h2>
 	<div class="card-deck">
 	 {% for course in courses %}
-	    <div class="card border-dark mb-3 color{{ course.4|make_list|first }}" id="card_box">
-	    	<div class="card-header">{{course.1}}: {{course.2}}</div>
+	    <div class="card border-dark mb-3 color{{ course.averageRating|make_list|first }}" id="card_box">
+	    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
 		    <div class="card-body text-dark">
 		      <h4 class="card-title"></h4>
-		      <p class="card-text">Average Rating: {{course.4}}</p>
-		      <p class="card-text">Number of Ratings: {{course.5}}</p>
+		      <p class="card-text">Average Rating: {{course.averageRating}}</p>
+		      <p class="card-text">Number of Ratings: {{course.numberOfRatings}}</p>
 		    </div>
 		    <div class="card-footer">
 		      <small class="text-muted"></small>
