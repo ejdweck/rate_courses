@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'course',
     'bootstrap4',
     'widget_tweaks',
+    'watson',
 ]
 
 MIDDLEWARE = [

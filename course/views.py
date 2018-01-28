@@ -7,13 +7,12 @@ from course.models import CourseReview, Course, Instructor
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from watson import search as watson
 import datetime
 
 def homepage(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC LIMIT 9'
-    cursor.execute(query)
-    course_reviews = cursor.fetchall()
+    
+    course_reviews = CourseReview.objects.all().order_by('reviewDate')[:3]
     return render(request, 'homepage.html', {'course_reviews': course_reviews})
 
 def about(request):
@@ -171,6 +170,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            print("in signup")
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
@@ -181,57 +181,15 @@ def signup(request):
 
 def search(request):
     if request.method == 'GET': # If the form is submitted
+        
         search_query = request.GET.get('searchbox')
-        # parse user input into course department and course number
-        courseDepartmentAndNumber = search_query.upper()
-        courseDepartmentIndex = 0
-        if(len(courseDepartmentAndNumber) > 4):
-            for c in range(len(courseDepartmentAndNumber)):
-                courseDepartmentIndex = c
-                print(courseDepartmentIndex)
-                if (courseDepartmentAndNumber[c].isdigit()):
-                    break;
-                else:
-                    courseDepartmentIndex = len(courseDepartmentAndNumber)
-            courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
-            # force courseDepartment to uppercase letters for consistency in database
-            courseDepartment = courseDepartment.upper()
-            courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
-        else:
-            courseDepartment = courseDepartmentAndNumber
-            courseNumber = ""
-
-        #TODO - change to django querysets
-        '''
-        # find the course reviews that match the course department and course number entered exactly
-        courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment, courseNumber__contains=courseNumber)
-
-        # if for there is no record of a course a user searched, return a list of all course reviews that match the department
-        if not courses:
-            courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment)
-        '''
-
-        # Search for courses
-        cursor = connection.cursor()
-        query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'" + " AND course_course.coursenumber= " + "'" + courseNumber + "'"
-        print(query)
-        cursor.execute(query)
-        courses = cursor.fetchall()
-        print(courses)
-        if (not courses):
-            query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'"
-            cursor.execute(query)
-            courses = cursor.fetchall()
-
-        #Search for individual course reviews
-        cursor = connection.cursor()
-        query = ""
-        cursor.execute(query)
-        course_reviews = cursor.fetchall()
-        print (course_reviews)
-        if(not course_reviews):
-            query = ""
-            cursor.execute(query)
-            course_reviews = cursor.fetchall()
+        courses = watson.filter(Course, search_query)
+        course_reviews = watson.filter(CourseReview, search_query)
+       
+        for c in course_reviews:
+            print(c.instructorId.lastName)
+        
+        print ("in search")
+        print (courses)
         return render(request, 'search.html', {'courses':courses, 'course_reviews':course_reviews})
     # Your code
