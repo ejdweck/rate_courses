@@ -6,7 +6,7 @@ h1, h2, h3, h4, h5, h6 {
 	min-width: 20rem;
 	max-width: 20rem;
 	height: auto;
-	margin: 2.5% 2.5% 2.5% 2.5%;
+	margin: auto;
 }
 
 .homepage-text {
@@ -63,7 +63,6 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 }
 
 /* colors for cards css */
-/*
 .color10 {
 	background-color: #ffffff;
 }
@@ -107,7 +106,7 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 .color0 {
 	background-color: #ff0000;
 }
-*/
+
 .body {
 	background-color: grey;
 }
