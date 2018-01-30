@@ -11,7 +11,6 @@ from watson import search as watson
 import datetime
 
 def homepage(request):
-    
     course_reviews = CourseReview.objects.all().order_by('reviewDate')[:3]
     return render(request, 'homepage.html', {'course_reviews': course_reviews})
 
@@ -19,13 +18,11 @@ def about(request):
     return render(request, 'about.html')
 
 def courses(request):
-
     courses = Course.objects.all()
     return render(request, 'courses.html', {'courses':courses})
 
 def course_reviews(request):
     course_reviews = CourseReview.objects.all().order_by('reviewDate')
-
     return render(request, 'course_reviews.html', {'course_reviews': course_reviews})
 
 def add_course_review(request):
@@ -183,15 +180,16 @@ def signup(request):
 
 def search(request):
     if request.method == 'GET': # If the form is submitted
-        
         search_query = request.GET.get('searchbox')
+        # search on Course table
         courses = watson.filter(Course, search_query)
+        # search on CourseReview table
         course_reviews = watson.filter(CourseReview, search_query)
-       
+
+        print(course_reviews)
+
         for c in course_reviews:
             print(c.instructorId.lastName)
         
-        print ("in search")
-        print (courses)
-        return render(request, 'search.html', {'courses':courses, 'course_reviews':course_reviews})
+        return render(request, 'search.html', {'courses': courses, 'course_reviews': course_reviews})
     # Your code

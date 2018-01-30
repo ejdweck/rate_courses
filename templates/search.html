@@ -22,17 +22,19 @@
 	<h2>Search Results - Courses</h2>
 	<div class="card-deck">
 	 {% for course in courses %}
-	    <div class="card border-dark mb-3 color{{ course.averageRating|make_list|first }}" id="card_box">
-	    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
-		    <div class="card-body text-dark">
-		      <h4 class="card-title"></h4>
-		      <p class="card-text">Average Rating: {{course.averageRating}}</p>
-		      <p class="card-text">Number of Ratings: {{course.numberOfRatings}}</p>
-		    </div>
-		    <div class="card-footer">
-		      <small class="text-dark"></small>
-		    </div>
-		 </div>
+	 	<div class="col-sm-4">
+		    <div class="card border-dark mb-3 color{{ course.averageRating|make_list|first }}" id="card_box">
+		    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
+			    <div class="card-body text-dark">
+			      <h4 class="card-title"></h4>
+			      <p class="card-text">Average Rating: {{course.averageRating}}</p>
+			      <p class="card-text">Number of Ratings: {{course.numberOfRatings}}</p>
+			    </div>
+			    <div class="card-footer">
+			      <small class="text-dark"></small>
+			    </div>
+			</div>
+		</div>
 	  {% endfor %}
 	</div>
 </div>
@@ -40,18 +42,21 @@
 <div class="container"> 
 	<h2>Search Results - Individual Course Reviews</h2>
 	<div class="card-deck"> 
-	 {% for course in course_reviews %}
-	    <div class="card border-dark mb-3 color{{course.rating}}" id="card_box">
-	    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
-		    <div class="card-body text-dark">
-		        <p class="card-text">Instructor: {{course.instructorId.firstName}} {{course.instructorId.lastName}}</p>
-		        <p class="card-text">Review: {{course.review}}</p>
-		        <p id="cardRating" class="card-text">Rating: {{course.rating}}</p>
-		    </div>
-		    <div class="card-footer">
-		      <small class="text-dark">Reviewed on {{course.reviewDate}}</small>
-		    </div>
-		 </div>
+	 {% for course_review in course_reviews %}
+	 {{course_review}}
+	 	<div class="col-sm-4">
+		    <div class="card border-dark mb-3 color{{course.rating}}" id="card_box">
+		    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
+			    <div class="card-body text-dark">
+			        <p class="card-text">Instructor: {{course.instructorId.firstName}} {{course.instructorId.lastName}}</p>
+			        <p class="card-text">Review: {{course.review}}</p>
+			        <p id="cardRating" class="card-text">Rating: {{course.rating}}</p>
+			    </div>
+			    <div class="card-footer">
+			      <small class="text-dark">Reviewed on {{course.reviewDate}}</small>
+			    </div>
+			</div>
+		</div>
 	  {% endfor %}
 	</div>
 </div>
