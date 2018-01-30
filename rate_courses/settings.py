@@ -25,7 +25,7 @@ SECRET_KEY = 'yc7tz2kaok&re4@j*rs2#1yk^8ph(p=f@b%diaj)n+953gwjq!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ejdweck.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition

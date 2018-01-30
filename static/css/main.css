@@ -6,7 +6,6 @@ h1, h2, h3, h4, h5, h6 {
 	min-width: 20rem;
 	max-width: 20rem;
 	height: auto;
-	margin: auto;
 }
 
 .homepage-text {
@@ -18,19 +17,6 @@ h1, h2, h3, h4, h5, h6 {
 	padding-right: 10%;
 	text-align: center;
 }
-
-/* Add Course Form CSS */
-
-/*.add-course-review-form {
-	background-color: #b0b3b7;
-    width: 40%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    margin-top: 5%;
-    margin-left: 30%;
-    margin-right: 30%;
-    border-collapse: separate;
-} */
 
 .form-box {
 	text-align: center;
