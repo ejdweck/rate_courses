@@ -8,5 +8,5 @@ class CourseConfig(AppConfig):
         CourseReview = self.get_model('CourseReview')
         Instructor = self.get_model('Instructor')
         watson.register(Course)
-        watson.register(CourseReview, fields=("instructorId", "instructorId"))
+        watson.register(CourseReview)
         watson.register(Instructor)  
