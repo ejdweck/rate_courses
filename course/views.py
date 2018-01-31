@@ -7,39 +7,78 @@ from course.models import CourseReview, Course, Instructor
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from watson import search as watson
 import datetime
 
 def homepage(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC LIMIT 9'
-    cursor.execute(query)
-    course_reviews = cursor.fetchall()
-    return render(request, 'homepage.html', {'course_reviews': course_reviews})
+    # get course review objects for rendering on the homepage
+    course_reviews = CourseReview.objects.all().order_by('reviewDate')[:9]
+    # list including necessary data for html blog tags (form, courses, instructurs, course_reviews)
+    argumentList = modal_form(request)
+    return render(request, 'homepage.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
 
 def about(request):
-    return render(request, 'about.html')
+    # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
+    argumentList = modal_form(request)
+    return render(request, 'about.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2]})
 
 def courses(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM Course_Course'
-    cursor.execute(query)
-    courses = cursor.fetchall()
-    return render(request, 'courses.html', {'courses':courses})
+    # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
+    argumentList = modal_form(request)
+    return render(request, 'courses.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2]})
 
 def course_reviews(request):
-    cursor = connection.cursor()
-    query = 'SELECT * FROM course_coursereview, course_instructor WHERE course_coursereview.instructorId = course_instructor.instructorId ORDER BY reviewDate DESC'
-    #coursereviews = CourseReview.objects.filter(instructorId=1)
-    #print(coursereviews.instructorFirstName)
-    cursor.execute(query)
-    course_reviews = cursor.fetchall()
-    return render(request, 'course_reviews.html', {'course_reviews': course_reviews})
+    # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
+    argumentList = modal_form(request)
+    course_reviews = CourseReview.objects.all().order_by('reviewDate')
+    return render(request, 'course_reviews.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
 
-def add_course_review(request):
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            print("in signup")
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('homepage')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+def search(request):
+    if request.method == 'GET': # If the form is submitted
+        search_query = request.GET.get('searchbox')
+        # search on Course table
+        courses = watson.filter(Course, search_query)
+        # search on CourseReview table
+        course_reviews = watson.filter(CourseReview, search_query)
+
+        print(course_reviews)
+
+        for c in course_reviews:
+            print(c.instructorId.lastName)
+        
+        return render(request, 'search.html', {'courses': courses, 'course_reviews': course_reviews})
+
+def modal_form(request):
     if request.method == 'GET':
         form = AddCourseReviewForm(auto_id=True)
+        # get courses for auto complete
+        courses = Course.objects.all()
+        # get instructors names for auto complete
+        instructors = Instructor.objects.all()
+        argumentList = [form, courses, instructors]
+        return argumentList # 'courses': courses, 'instructors': instructors})
     else:
         form = AddCourseReviewForm(request.POST,auto_id=True)
+        # get courses for auto complete
+        courses = Course.objects.all()
+        # get instructors names for auto complete
+        instructors = Instructor.objects.all()
+        argumentList = [form, courses, instructors]
         if form.is_valid():
             #courseDepartment = form.cleaned_data['courseDepartment']
             # parse course department and course number from single field on form
@@ -86,23 +125,26 @@ def add_course_review(request):
                 currentUser = request.user
                 currentUserId = currentUser.id
 
+                # instructor object to pass into course review as we linked the models via Foreign Keys
+                instructorObject = ""
+
                 try:
                     # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorId = instructor.instructorId
+                    instructorObject = instructor
                 except ObjectDoesNotExist:
                     # create Instructor tuple if new instructor
                     newInstructor = Instructor.objects.create(
                         firstName=instructorFirstName,
                         lastName=instructorLastName
                         )
-                    instructorId = newInstructor.instructorId
+                    instructorObject = newInstructor
                 
                 # add the course review
                 courseReview = CourseReview.objects.create(
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
-                    instructorId = instructorId,
+                    instructorId = instructorObject,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
@@ -123,10 +165,14 @@ def add_course_review(request):
                 # get the userId for the user leaving the review
                 currentUser = request.user
                 currentUserId = currentUser.id
+
+                # instructor object to pass into course review as we linked the models via Foreign Keys
+                instructorObject = ""
+
                 try:
                     # find out if we need to create a new instructor
                     instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorId = instructor.instructorId
+                    instructorObject = instructor
                 except ObjectDoesNotExist:
                     # add new instructor 
                     newInstructor = Instructor.objects.create(
@@ -134,16 +180,17 @@ def add_course_review(request):
                         lastName=instructorLastName
                         )
                     instructorId = newInstructor.instructorId
+                    instructorObject = newInstructor
 
                 # if course exists, just add course on the id of the instructor from instructor table
                 courseReview = CourseReview.objects.create(
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
-                    instructorId = instructorId,
+                    instructorId = instructorObject,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
-                    reviewDate = reviewDate 
+                    reviewDate = reviewDate
                 )
 
                 # generate the course rating
@@ -155,83 +202,5 @@ def add_course_review(request):
                 course.numberOfRatings += 1
                 # commit the changes
                 course.save()
+            return argumentList
 
-            return render(request, "submission.html")
-    # get courses for auto complete
-    courses = Course.objects.all()
-    # get instructors names for auto complete
-    instructors = Instructor.objects.all()
-
-    return render(request, "add_course_review_form.html", {'form': form, 'courses': courses, 'instructors': instructors})
-    #return render(request, "add_course_review.html", {'form': form, 'courses': courses, 'instructors': instructors})
-
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('homepage')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
-
-def search(request):
-    if request.method == 'GET': # If the form is submitted
-        search_query = request.GET.get('searchbox')
-        # parse user input into course department and course number
-        courseDepartmentAndNumber = search_query.upper()
-        courseDepartmentIndex = 0
-        if(len(courseDepartmentAndNumber) > 4):
-            for c in range(len(courseDepartmentAndNumber)):
-                courseDepartmentIndex = c
-                print(courseDepartmentIndex)
-                if (courseDepartmentAndNumber[c].isdigit()):
-                    break;
-                else:
-                    courseDepartmentIndex = len(courseDepartmentAndNumber)
-            courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
-            # force courseDepartment to uppercase letters for consistency in database
-            courseDepartment = courseDepartment.upper()
-            courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
-        else:
-            courseDepartment = courseDepartmentAndNumber
-            courseNumber = ""
-
-        #TODO - change to django querysets
-        '''
-        # find the course reviews that match the course department and course number entered exactly
-        courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment, courseNumber__contains=courseNumber)
-
-        # if for there is no record of a course a user searched, return a list of all course reviews that match the department
-        if not courses:
-            courses = CourseReview.objects.filter(courseDepartment__contains=courseDepartment)
-        '''
-
-        # Search for courses
-        cursor = connection.cursor()
-        query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'" + " AND course_course.coursenumber= " + "'" + courseNumber + "'"
-        print(query)
-        cursor.execute(query)
-        courses = cursor.fetchall()
-        print(courses)
-        if (not courses):
-            query = "SELECT * FROM Course_Course WHERE course_course.coursedepartment=" + "'" + courseDepartment +"'"
-            cursor.execute(query)
-            courses = cursor.fetchall()
-
-        #Search for individual course reviews
-        cursor = connection.cursor()
-        query = ""
-        cursor.execute(query)
-        course_reviews = cursor.fetchall()
-        print (course_reviews)
-        if(not course_reviews):
-            query = ""
-            cursor.execute(query)
-            course_reviews = cursor.fetchall()
-        return render(request, 'search.html', {'courses':courses, 'course_reviews':course_reviews})
-    # Your code

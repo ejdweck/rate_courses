@@ -1,11 +1,12 @@
+
 h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
-
 #card_box {
 	min-width: 20rem;
 	max-width: 20rem;
-	height: auto;
+	min-height: 25rem;
+	max-height: 25rem;
 	margin: 2.5% 2.5% 2.5% 2.5%;
 }
 
@@ -19,29 +20,16 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
 
-/* Add Course Form CSS */
-
-/*.add-course-review-form {
-	background-color: #b0b3b7;
-    width: 40%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    margin-top: 5%;
-    margin-left: 30%;
-    margin-right: 30%;
-    border-collapse: separate;
-} */
-
 .form-box {
 	text-align: center;
 }
 
 body .ui-autocomplete {
   /* font-family to all */
+  z-index: 5000;
 }
 
 body .ui-state-hover {
-	background: #428BCA!important;
 }
 
 body .ui-autocomplete .ui-menu-item .ui-corner-all {
@@ -49,7 +37,10 @@ body .ui-autocomplete .ui-menu-item .ui-corner-all {
 }
 
 body .ui-autocomplete .ui-menu-item .ui-state-focus {
-   /* selected <a> */
+	/* selected <a> */
+	background: none !important;
+	background-color: pink !important;
+	text-decoration-color: ;
 }
 
 
@@ -61,7 +52,6 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 #formTitle {
 	text-align: center;
 }
-
 /* colors for cards css */
 .color10 {
 	background-color: #ffffff;
