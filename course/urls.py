@@ -10,7 +10,6 @@ urlpatterns = [
     url(r'^about/$', views.about, name='about'),
  	url(r'^courses/$', views.courses, name='courses'),
     url(r'^course_reviews/$', views.course_reviews, name='course_reviews'),
-    url(r'^add_course_review/$', views.add_course_review, name='add_course_review'),
     url(r'^search/$', views.search, name='search'),
 
     # authentification system urls

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 <!doctype html>
 <html lang="en">
@@ -36,7 +37,7 @@
           <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
           <a class="nav-item nav-link" href="{% url 'courses' %}">All Courses</a>
           <a class="nav-item nav-link" href="{% url 'course_reviews' %}">All Course Reviews</a>
-          <a class="nav-item nav-link" href="{% url 'add_course_review' %}">Add a Course Review</a>
+          <a class="nav-item nav-link" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Add a Course Review</a>
 
           <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
           <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
@@ -44,6 +45,107 @@
         </div>
       </div>
     </nav>
+    <script>
+    $(function() {
+
+    var courseDeptAndNumber = [
+      {% for course in courses %}
+          "{{ course.courseDepartment}}{{course.courseNumber}}" {% if not forloop.last %},{% endif %}
+       {% endfor %}
+    ];
+
+    var instructorNames = [
+       {% for name in instructors %}
+          "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
+       {% endfor %}
+    ];
+
+    $( "#courseDepartmentAndNumber" ).autocomplete({
+      source: courseDeptAndNumber
+    });
+
+    $( "#instructorName" ).autocomplete({
+      source: instructorNames
+    });
+
+    });
+
+    $(function() {
+      var rating = $('#ratingSlider').val();
+      console.log(rating)
+    });
+
+    $(document).on('input', '#rating', function() {
+        $('#slider_value').html( $(this).val() );
+    });
+
+    </script>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-box add-course-review-form">
+              <form method="post">
+                {% csrf_token %}
+                <div class="container addCourseReviewForm">
+                  <h3 id="formTitle">Add a course review and help your fellow classmates!</h3>
+                  <br>
+                  <div class=row>
+                    <div class="col">
+                        <label for="courseDepartmentAndNumber">Course Code</label>
+                        {% render_field form.courseDepartmentAndNumber id+="courseDepartmentAndNumber" class+="form-control courseDepartmentAndNumber" placeholder="cs537" %}
+                          <small id="courseDepartmentAndNumber" class="form-text text-muted">Enter the course code exactly as it appears in the course guide - reviews with an incorrect course number may be subject to removal.</small>
+                      </div>
+                  </div>
+                  <br>
+                  <div class=row>
+                      <div class="col">
+                        <label for="instructorName">Instructor Name</label>
+                          {% render_field form.instructorName id+="instructorName" class+="form-control instructorName" placeholder="Eric Clapton" %}
+                          <small id="instructorName" class="form-text text-muted">Seperate first and last name by whitespace.</small>
+                      </div>
+                  </div>
+                  <br>
+                  <div class=row>
+                      <div class="col">
+                        <label id="ratingSlider" for="rating">Rating</label>
+                          {% render_field form.rating id+="rating" class+="form-control rating" placeholder="" %}
+                            <span id="slider_value">5</span>
+                          <small id="rating" class="form-text text-muted">Rate from 1 to 10.</small>
+                      </div>
+                  </div>
+                  <br>
+                  <div class=row>
+                      <div class="col">
+                        <label for="comments">Comments</label>
+                          {% render_field form.review id+="comments" class+="form-control review" placeholder="any comments about the course" %}
+                          <small id="comments" class="form-text text-muted">Any comments to justify your rating. Common topics to include are instructor difficulty or hours spent per week.</small>
+                      </div>
+                  </div>
+                  <br>
+                  <div class=row>
+                    <div class="col">
+                      <div class="form-actions">
+                          <button class="btn-primary" type="submit">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
     {% block content %}
     {% endblock %}
 

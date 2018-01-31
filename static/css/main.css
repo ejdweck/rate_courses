@@ -10,7 +10,6 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 2.5% 2.5% 2.5% 2.5%;
 }
 
-
 .homepage-text {
 	margin-top: 5%;
 }
@@ -27,10 +26,10 @@ h1, h2, h3, h4, h5, h6 {
 
 body .ui-autocomplete {
   /* font-family to all */
+  z-index: 5000;
 }
 
 body .ui-state-hover {
-	background: #428BCA!important;
 }
 
 body .ui-autocomplete .ui-menu-item .ui-corner-all {
@@ -38,7 +37,10 @@ body .ui-autocomplete .ui-menu-item .ui-corner-all {
 }
 
 body .ui-autocomplete .ui-menu-item .ui-state-focus {
-   /* selected <a> */
+	/* selected <a> */
+	background: none !important;
+	background-color: pink !important;
+	text-decoration-color: ;
 }
 
 
