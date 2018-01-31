@@ -31,7 +31,18 @@
 		        <p class="card-text">Instructor: {{course.instructorId.firstName}} {{course.instructorId.lastName}}</p>
 		        <p class="card-text">Review: {{course.review}}</p>
 		        <p id="cardRating" class="card-text">Rating: {{course.rating}}</p>
-		        <p class="card-text">tags: {{course.courseReviewTagId.weedOutCourse}} {{course.courseReviewTagId.interestingContent}} {{course.courseReviewTagId.lotsOfHomework}} {{course.courseReviewTagId.mandatoryAttendance}}</p>
+		        {% if course.courseReviewTagId.weedOutCourse == 1 %}
+		        	<p> Weed Out <p>
+		        {% endif %}
+				{% if course.courseReviewTagId.interestingContent == 1 %}
+		        	<p> Interesting Content <p>
+		        {% endif %}
+		        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
+		        	<p> Lots of Homework <p>
+		        {% endif %}
+				{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
+		        	<p> Mandatory Attendance <p>
+		        {% endif %}
 		    </div>
 		    <div class="card-footer">
 		      <small class="text-dark">Reviewed on {{course.reviewDate}}</small>
