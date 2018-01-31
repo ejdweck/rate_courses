@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.db import connection
 from course.forms import AddCourseReviewForm
-from course.models import CourseReview, Course, Instructor
+from course.models import CourseReview, Course, Instructor, CourseReviewTag
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -55,12 +55,9 @@ def search(request):
         courses = watson.filter(Course, search_query)
         # search on CourseReview table
         course_reviews = watson.filter(CourseReview, search_query)
-
         print(course_reviews)
-
         for c in course_reviews:
             print(c.instructorId.lastName)
-        
         return render(request, 'search.html', {'courses': courses, 'course_reviews': course_reviews})
 
 def modal_form(request):
@@ -71,6 +68,7 @@ def modal_form(request):
         # get instructors names for auto complete
         instructors = Instructor.objects.all()
         argumentList = [form, courses, instructors]
+        print(argumentList)
         return argumentList # 'courses': courses, 'instructors': instructors})
     else:
         form = AddCourseReviewForm(request.POST,auto_id=True)
@@ -79,8 +77,8 @@ def modal_form(request):
         # get instructors names for auto complete
         instructors = Instructor.objects.all()
         argumentList = [form, courses, instructors]
+        print(argumentList)
         if form.is_valid():
-            #courseDepartment = form.cleaned_data['courseDepartment']
             # parse course department and course number from single field on form
             courseDepartmentIndex = 0
             courseDepartmentAndNumber = form.cleaned_data['courseDepartmentAndNumber']
@@ -94,9 +92,22 @@ def modal_form(request):
             courseDepartment = courseDepartment.upper()
             courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
 
-            #courseNumber = form.cleaned_data['courseNumber']
+            # parse review from form on field
             review = form.cleaned_data['review']
+            # parse rating from form on field
             rating = form.cleaned_data['rating']
+            # determine if weed out button has been pressed on form on field
+            weedOutButton = form.cleaned_data['weedOutCourse']
+            print(weedOutButton)
+            interestingContent = form.cleaned_data['interestingContent']
+            print(interestingContent)
+            lotsOfHomework = form.cleaned_data['lotsOfHomework']
+            print(lotsOfHomework)
+            mandatoryAttendance = form.cleaned_data['mandatoryAttendance']
+            print(mandatoryAttendance)
+
+            # create CourseReviewTags object
+            courseReviewTag = CourseReviewTag.objects.create(weedOutCourse=weedOutButton, interestingContent=interestingContent, lotsOfHomework=lotsOfHomework, mandatoryAttendance=mandatoryAttendance) 
 
             # set the review date to the current day
             reviewDate = datetime.datetime.today()
@@ -145,6 +156,7 @@ def modal_form(request):
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
                     instructorId = instructorObject,
+                    courseReviewTagId = courseReviewTag,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,
@@ -187,6 +199,7 @@ def modal_form(request):
                     courseDepartment = courseDepartment,
                     courseNumber = courseNumber,
                     instructorId = instructorObject,
+                    courseReviewTagId = courseReviewTag,
                     reviewerId = currentUserId,
                     review = review,
                     rating = rating,

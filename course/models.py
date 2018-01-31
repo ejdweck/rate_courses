@@ -28,12 +28,21 @@ class GradePoint(models.Model):
 	class Meta:
 		unique_together = (('courseDepartment', 'courseNumber'),)
 
+class CourseReviewTag(models.Model):
+	courseReviewTagId = models.AutoField(primary_key=True)
+	weedOutCourse = models.IntegerField()
+	interestingContent = models.IntegerField()
+	lotsOfHomework = models.IntegerField()
+	mandatoryAttendance = models.IntegerField()
+
 class CourseReview(models.Model):
 	courseDepartment = models.CharField(max_length=3)
 	courseNumber = models.CharField(max_length=3)
 	reviewId = models.AutoField(primary_key=True)
 	instructorId = models.ForeignKey(Instructor, on_delete = models.CASCADE)
+	courseReviewTagId = models.ForeignKey(CourseReviewTag, on_delete = models.CASCADE)
 	reviewerId = models.IntegerField()
 	review = models.CharField(max_length=50)
 	rating = models.IntegerField()
 	reviewDate = models.DateField()
+

@@ -79,12 +79,50 @@
         $('#slider_value').html( $(this).val() );
     });
 
+    // TODO change to jquery 
+    function recordWeedOutButton(o){
+      $('#weedOutButton').button('toggle') 
+      if (document.getElementById('weedOutButton').classList.contains('active')) {
+        document.getElementById('weedOutField').value=1;
+      } else {
+        document.getElementById('weedOutField').value=0;
+      }
+    }
+
+    function recordInterestingContentButton(o){
+      $('#interestingContentButton').button('toggle') 
+      if (document.getElementById('interestingContentButton').classList.contains('active')) {
+        document.getElementById('interestingContentField').value=1;
+      } else {
+        document.getElementById('interestingContentField').value=0;
+      }
+    }
+    
+    function recordLotsOfHomeworkButton(o){
+      document.getElementById('lotsOfHomeworkButton').value=1;
+      $('#lotsOfHomeworkButton').button('toggle') 
+      if (document.getElementById('lotsOfHomeworkButton').classList.contains('active')) {
+        document.getElementById('lotsOfHomeworkField').value=1;
+      } else {
+        document.getElementById('lotsOfHomeworkField').value=0;
+      }
+    }
+
+    function recordMandatoryAttendanceButton(o){
+      $('#mandatoryAttendanceButton').button('toggle') 
+      if (document.getElementById('mandatoryAttendanceButton').classList.contains('active')) {
+        document.getElementById('mandatoryAttendanceField').value=1;
+      } else {
+        document.getElementById('mandatoryAttendanceField').value=0;
+      }
+    }
+
     </script>
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+            <h5 class="modal-title" id="exampleModalLabel">New Course Review</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -123,6 +161,20 @@
                   <br>
                   <div class=row>
                       <div class="col">
+                          <p>Select all that apply</p>
+                          {% render_field form.weedOutCourse id+="weedOutField" class+="form-control course-review-tag-btn" %}
+                          {% render_field form.interestingContent id+="interestingContentField" class+="form-control course-review-tag-btn" %}
+                          {% render_field form.lotsOfHomework id+="lotsOfHomeworkField" class+="form-control " %}
+                          {% render_field form.mandatoryAttendance id+="mandatoryAttendanceField" class+="form-control" %}
+                          <button type=button class="btn btn-outline-danger lg course-review-tag-btn" id="weedOutButton" onclick="recordWeedOutButton(this)">Weed Out Course</button>
+                          <button type=button class="btn btn-outline-primary lg course-review-tag-btn" id="interestingContentButton" onclick="recordInterestingContentButton(this)">Interesting Content</button>
+                          <button type=button class="btn btn-outline-warning lg course-review-tag-btn" id="lotsOfHomeworkButton" onclick="recordLotsOfHomeworkButton(this)">Lots of Homework</button>
+                          <button type=button class="btn btn-outline-info lg course-review-tag-btn" id="mandatoryAttendanceButton" onclick="recordMandatoryAttendanceButton(this)">MandatoryAttendance</button>
+                      </div>
+                  </div>
+                  <br>
+                  <div class=row>
+                      <div class="col">
                         <label for="comments">Comments</label>
                           {% render_field form.review id+="comments" class+="form-control review" placeholder="any comments about the course" %}
                           <small id="comments" class="form-text text-muted">Any comments to justify your rating. Common topics to include are instructor difficulty or hours spent per week.</small>
@@ -132,7 +184,7 @@
                   <div class=row>
                     <div class="col">
                       <div class="form-actions">
-                          <button class="btn-primary" type="submit">Submit</button>
+                          <button class="btn btn-primary lg" type="submit">Submit</button>
                       </div>
                     </div>
                   </div>

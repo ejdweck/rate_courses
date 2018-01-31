@@ -52,6 +52,11 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 #formTitle {
 	text-align: center;
 }
+
+.course-review-tag-btn {
+	margin: 2% 2% 2% 2%;
+}
+
 /* colors for cards css */
 .color10 {
 	background-color: #ffffff;
