@@ -38,33 +38,35 @@
 					    </div>
 	  			        <div class="modal-body">
 					    	<h5 class="modal-title text-muted" id="course-title-modal">Introduction to the Education of the Sound Nice</h5>
-				    		<div class="col-md-6">
-						    	<div class="card review-card">
-							        <p class="review-title">Review</p>
-							        <p class="review-text">{{course.review}}</p>
-						        </div>
-					    	</div>
-					    	<div class="col-md-6">
-								<canvas id="pie-chart" width="20" height="10"></canvas>
-								<script>
-								new Chart(document.getElementById("pie-chart"), {
-								    type: 'pie',
-								    data: {
-								      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-								      datasets: [{
-								        label: "Population (millions)",
-								        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-								        data: [2478,5267,734,784,433]
-								      }]
-								    },
-								    options: {
-								      title: {
-								        display: true,
-								        text: 'Predicted world population (millions) in 2050'
-								      }
-								    }
-								});	
-								</script>
+					    	<div class="row">
+					    		<div class="col-md-6">
+							    	<div class="card review-card">
+								        <p class="review-title">Review</p>
+								        <p class="review-text">{{course.review}}</p>
+							        </div>
+						    	</div>
+						    	<div class="col-md-6">
+									<canvas id="pie-chart" width="20" height="10"></canvas>
+									<script>
+									new Chart(document.getElementById("pie-chart"), {
+									    type: 'pie',
+									    data: {
+									      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+									      datasets: [{
+									        label: "Population (millions)",
+									        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+									        data: [2478,5267,734,784,433]
+									      }]
+									    },
+									    options: {
+									      title: {
+									        display: true,
+									        text: 'Predicted world population (millions) in 2050'
+									      }
+									    }
+									});	
+									</script>
+						    	</div>
 					    	</div>
 	  			        	<div class="course-tags-modal">
 						        {% if course.courseReviewTagId.weedOutCourse == 1 %}
