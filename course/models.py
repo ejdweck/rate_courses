@@ -35,6 +35,14 @@ class CourseReviewTag(models.Model):
 	lotsOfHomework = models.IntegerField()
 	mandatoryAttendance = models.IntegerField()
 
+class CourseTag(models.Model):
+	courseTagId = models.AutoField(primary_key=True)
+	weedOutCourse = models.IntegerField()
+	interestingContent = models.IntegerField()
+	lotsOfHomework = models.IntegerField()
+	mandatoryAttendance = models.IntegerField()
+
+
 class CourseReview(models.Model):
 	courseDepartment = models.CharField(max_length=3)
 	courseNumber = models.CharField(max_length=3)
@@ -46,3 +54,5 @@ class CourseReview(models.Model):
 	rating = models.IntegerField()
 	reviewDate = models.DateField()
 
+	def rating_percentage(self):
+	   	return self.rating * 10

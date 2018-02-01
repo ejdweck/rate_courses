@@ -1,7 +1,10 @@
 
+/* Center all headers for ease of use*/
 h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
+
+/* rules for cards & elements within cards */
 #card_box {
 	min-width: 20rem;
 	max-width: 20rem;
@@ -10,10 +13,59 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 2.5% 2.5% 2.5% 2.5%;
 }
 
+.card-title {
+	font-size: 0.85em;
+}
+
+.card-text {
+	text-align: center;
+}
+
+.review-title {
+	margin-top: 1%;
+	margin-bottom: 1%;
+	text-align: center;
+}
+
+.review-text {
+	text-align: left;
+	margin-left: 3%;
+	margin-right: 3%;
+	font-size: .95em;
+}
+
+.card-body {
+	padding: 0;
+}
+
+.progress {
+	height: 1.5rem;
+    margin: 5% 5% 2.5% 5%;
+}
+
+.progress-bar {
+	background-color: #ff6666;
+}
+
+.progress span {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1%;
+}
+
+.review-card {
+    min-height: 10rem;
+    max-height: 10rem;
+	background-color: #ffcccc;
+}
+
 .homepage-text {
 	margin-top: 5%;
 }
-
+		
 .search-homepage {
 	padding-left: 10%;
 	padding-right: 10%;
@@ -58,6 +110,7 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 }
 
 /* colors for cards css */
+/*
 .color10 {
 	background-color: #ffffff;
 }
@@ -101,7 +154,7 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 .color0 {
 	background-color: #ff0000;
 }
-
+*/
 .body {
 	background-color: grey;
 }
@@ -124,5 +177,7 @@ body {
 	text-align: center;
 }
 
-
+#course-tag {
+	margin: 1% 1% 1% 1%;
+}
 

@@ -26,23 +26,37 @@
 	<div class="card-deck">
 	{% for course in course_reviews %}
 	    <div class="card border-dark mb-3 color{{course.rating}}" id="card_box">
-	    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
+	    	<div class="card-header">
+		    	    <h6 >{{course.courseDepartment}}{{course.courseNumber}}</h6>
+					<h6 class="card-subtitle text-muted">Intro To Artificial Intelligence and Systems Engineering</h6>
+	    	</div>
 		    <div class="card-body text-dark">
 		        <p class="card-text">Instructor: {{course.instructorId.firstName}} {{course.instructorId.lastName}}</p>
-		        <p class="card-text">Review: {{course.review}}</p>
-		        <p id="cardRating" class="card-text">Rating: {{course.rating}}</p>
-		        {% if course.courseReviewTagId.weedOutCourse == 1 %}
-		        	<p> Weed Out <p>
-		        {% endif %}
-				{% if course.courseReviewTagId.interestingContent == 1 %}
-		        	<p> Interesting Content <p>
-		        {% endif %}
-		        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
-		        	<p> Lots of Homework <p>
-		        {% endif %}
-				{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
-		        	<p> Mandatory Attendance <p>
-		        {% endif %}
+		        <div class="card review-card">
+			        <p class="review-title">Review</p>
+			        <p class="review-text">{{course.review}}</p>
+		        </div>
+		        <!--
+		        <div class="course-tags">
+			        {% if course.courseReviewTagId.weedOutCourse == 1 %}
+			        	<button class="btn btn-outline-danger btn-sm " id="course-tag">Weed Out</button>
+			        {% endif %}
+					{% if course.courseReviewTagId.interestingContent == 1 %}
+			        	<button class="btn btn-outline-primary btn-sm " id="course-tag">Interesting Content</button>
+			        {% endif %}
+			        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
+			        	<button class="btn btn-outline-warning btn-sm " id="course-tag">Lots of Homework</button>
+			        {% endif %}
+					{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
+			        	<button class="btn btn-outline-info btn-sm " id="course-tag"> Mandatory Attendance </button>
+			        {% endif %}
+		    	</div>
+		    -->
+		    	<div class="progress">
+					<div class="progress-bar" role="progressbar" style="width: {{course.rating_percentage}}%;" aria-valuenow="" aria-valuemin="0" aria-valuemax="10">
+					</div>
+					<span>{{course.rating}}/10</span>
+			    </div>
 		    </div>
 		    <div class="card-footer">
 		      <small class="text-dark">Reviewed on {{course.reviewDate}}</small>
