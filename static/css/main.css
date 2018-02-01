@@ -38,6 +38,13 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0;
 }
 
+.course-tags-card {
+	text-align: center;
+}
+.badge {
+	margin: auto;
+}
+
 .progress {
 	height: 1.5rem;
     margin: 5% 5% 2.5% 5%;
@@ -60,6 +67,15 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 10rem;
     max-height: 10rem;
 	background-color: #ffcccc;
+}
+
+/* Rules for Modal */
+#course-code-modal {
+	margin: 0 auto;
+}
+#course-title-modal {
+	text-align: center;
+	margin-bottom: 2%;
 }
 
 .homepage-text {

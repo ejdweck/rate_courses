@@ -45,6 +45,7 @@ class AddCourseReviewForm(forms.Form):
         required = False,
         label = 'mandatoryAttendance',
         initial = 0,
+        widget=forms.HiddenInput()
     )
  
     review = forms.CharField(

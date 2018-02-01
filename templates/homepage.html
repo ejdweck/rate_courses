@@ -1,6 +1,5 @@
 {% extends 'index.html' %}
 {% block content %}
-
 <div class="container">
 	<h2 class="homepage-text">Honest Reviews on Courses at the University of Wisconsin Madison</h2>
 </div>
@@ -30,33 +29,89 @@
 		    	    <h6 >{{course.courseDepartment}}{{course.courseNumber}}</h6>
 					<h6 class="card-subtitle text-muted">Intro To Artificial Intelligence and Systems Engineering</h6>
 	    	</div>
-		    <div class="card-body text-dark">
+		    <div class="card-body text-dark" data-toggle="modal" data-target=".review-{{course.reviewId}}">
+				<div class="modal fade review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-lg ">
+				    <div class="modal-content">
+				    	<div class="modal-header">
+					    	<h5 class="modal-title" id="course-code-modal">{{course.courseDepartment}}{{course.courseNumber}}</h5>
+					    </div>
+	  			        <div class="modal-body">
+					    	<h5 class="modal-title text-muted" id="course-title-modal">Introduction to the Education of the Sound Nice</h5>
+				    		<div class="col-md-6">
+						    	<div class="card review-card">
+							        <p class="review-title">Review</p>
+							        <p class="review-text">{{course.review}}</p>
+						        </div>
+					    	</div>
+					    	<div class="col-md-6">
+								<canvas id="pie-chart" width="20" height="10"></canvas>
+								<script>
+								new Chart(document.getElementById("pie-chart"), {
+								    type: 'pie',
+								    data: {
+								      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+								      datasets: [{
+								        label: "Population (millions)",
+								        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+								        data: [2478,5267,734,784,433]
+								      }]
+								    },
+								    options: {
+								      title: {
+								        display: true,
+								        text: 'Predicted world population (millions) in 2050'
+								      }
+								    }
+								});	
+								</script>
+					    	</div>
+	  			        	<div class="course-tags-modal">
+						        {% if course.courseReviewTagId.weedOutCourse == 1 %}
+						        	<button class="btn btn-outline-danger btn-sm " id="course-tag">Weed Out</button>
+						        {% endif %}
+								{% if course.courseReviewTagId.interestingContent == 1 %}
+						        	<button class="btn btn-outline-primary btn-sm " id="course-tag">Interesting Content</button>
+						        {% endif %}
+						        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
+						        	<button class="btn btn-outline-warning btn-sm " id="course-tag">Lots of Homework</button>
+						        {% endif %}
+								{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
+						        	<button class="btn btn-outline-info btn-sm " id="course-tag"> Mandatory Attendance </button>
+						        {% endif %}
+					    	</div>
+					    </div>
+					    <div class="modal-footer">
+						    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					    </div>
+				    </div>
+				  </div>
+				</div>
 		        <p class="card-text">Instructor: {{course.instructorId.firstName}} {{course.instructorId.lastName}}</p>
 		        <div class="card review-card">
 			        <p class="review-title">Review</p>
 			        <p class="review-text">{{course.review}}</p>
 		        </div>
-		        <!--
-		        <div class="course-tags">
-			        {% if course.courseReviewTagId.weedOutCourse == 1 %}
-			        	<button class="btn btn-outline-danger btn-sm " id="course-tag">Weed Out</button>
-			        {% endif %}
-					{% if course.courseReviewTagId.interestingContent == 1 %}
-			        	<button class="btn btn-outline-primary btn-sm " id="course-tag">Interesting Content</button>
-			        {% endif %}
-			        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
-			        	<button class="btn btn-outline-warning btn-sm " id="course-tag">Lots of Homework</button>
-			        {% endif %}
-					{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
-			        	<button class="btn btn-outline-info btn-sm " id="course-tag"> Mandatory Attendance </button>
-			        {% endif %}
-		    	</div>
-		    -->
+    				
 		    	<div class="progress">
 					<div class="progress-bar" role="progressbar" style="width: {{course.rating_percentage}}%;" aria-valuenow="" aria-valuemin="0" aria-valuemax="10">
 					</div>
 					<span>{{course.rating}}/10</span>
 			    </div>
+			    <div class="course-tags-card">
+				        {% if course.courseReviewTagId.weedOutCourse == 1 %}
+					        <span class="badge badge-pill badge-danger"> </span>
+				        {% endif %}
+						{% if course.courseReviewTagId.interestingContent == 1 %}
+					        <span class="badge badge-pill badge-primary"> </span>
+				        {% endif %}
+				        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
+					        <span class="badge badge-pill badge-warning"> </span>
+				        {% endif %}
+						{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
+					        <span class="badge badge-pill badge-info"> </span>
+				        {% endif %}
+			    	</div>
 		    </div>
 		    <div class="card-footer">
 		      <small class="text-dark">Reviewed on {{course.reviewDate}}</small>
