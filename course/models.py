@@ -49,7 +49,6 @@ class CourseReview(models.Model):
 	reviewId = models.AutoField(primary_key=True)
 	instructorId = models.ForeignKey(Instructor, on_delete = models.CASCADE)
 	courseReviewTagId = models.ForeignKey(CourseReviewTag, on_delete = models.CASCADE)
-	reviewerId = models.IntegerField()
 	review = models.CharField(max_length=50)
 	rating = models.IntegerField()
 	reviewDate = models.DateField()

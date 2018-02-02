@@ -12,11 +12,6 @@ urlpatterns = [
     url(r'^course_reviews/$', views.course_reviews, name='course_reviews'),
     url(r'^search/$', views.search, name='search'),
 
-    # authentification system urls
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
-    url(r'^signup/$', core_views.signup, name='signup'),
-
     # admin page url
     url(r'^admin/', admin.site.urls),
     ]

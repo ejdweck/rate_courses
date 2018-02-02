@@ -1,7 +1,6 @@
 {% extends 'index.html' %}
 
 {% block content %}
-{% if user.is_authenticated %}
 <br>
 <div class="container">
 	<div class="row">
@@ -56,21 +55,4 @@
 	  {% endfor %}
 	</div>
 </div>
-{% else %}
-  <br>
-  <br>
-  <div class="container">
-    <h3>Oops! You must be logged in to view this content...</h3>
-    <br>
-    <div class="row" id="login-register-links">
-      <div class="col-md-6">
-        <a class="login-message" href= "{% url 'login' %}">click here to login</a>
-      </div>
-      <div class="col-md-6">
-        <a class="login-message" href= "{% url 'signup' %}">click here to register</a>
-      </div>
-    </div>
-  </div>
-{% endif %}
-
 {% endblock %}

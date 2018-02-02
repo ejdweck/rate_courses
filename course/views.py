@@ -98,13 +98,9 @@ def modal_form(request):
             rating = form.cleaned_data['rating']
             # determine if weed out button has been pressed on form on field
             weedOutButton = form.cleaned_data['weedOutCourse']
-            print(weedOutButton)
             interestingContent = form.cleaned_data['interestingContent']
-            print(interestingContent)
             lotsOfHomework = form.cleaned_data['lotsOfHomework']
-            print(lotsOfHomework)
             mandatoryAttendance = form.cleaned_data['mandatoryAttendance']
-            print(mandatoryAttendance)
 
             # create CourseReviewTags object
             courseReviewTag = CourseReviewTag.objects.create(weedOutCourse=weedOutButton, interestingContent=interestingContent, lotsOfHomework=lotsOfHomework, mandatoryAttendance=mandatoryAttendance) 
@@ -132,10 +128,6 @@ def modal_form(request):
                 # create course
                 new_course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
 
-                # get the userId for the user leaving the review
-                currentUser = request.user
-                currentUserId = currentUser.id
-
                 # instructor object to pass into course review as we linked the models via Foreign Keys
                 instructorObject = ""
 
@@ -157,7 +149,6 @@ def modal_form(request):
                     courseNumber = courseNumber,
                     instructorId = instructorObject,
                     courseReviewTagId = courseReviewTag,
-                    reviewerId = currentUserId,
                     review = review,
                     rating = rating,
                     reviewDate = reviewDate 
@@ -174,10 +165,6 @@ def modal_form(request):
                 course.save()
 
             else:
-                # get the userId for the user leaving the review
-                currentUser = request.user
-                currentUserId = currentUser.id
-
                 # instructor object to pass into course review as we linked the models via Foreign Keys
                 instructorObject = ""
 
@@ -200,7 +187,6 @@ def modal_form(request):
                     courseNumber = courseNumber,
                     instructorId = instructorObject,
                     courseReviewTagId = courseReviewTag,
-                    reviewerId = currentUserId,
                     review = review,
                     rating = rating,
                     reviewDate = reviewDate
@@ -216,4 +202,3 @@ def modal_form(request):
                 # commit the changes
                 course.save()
             return argumentList
-
