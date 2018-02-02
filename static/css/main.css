@@ -70,6 +70,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Rules for Modal */
+.course-review-modal {
+	cursor: pointer;
+}
+
 #course-code-modal {
 	margin: 0 auto;
 }

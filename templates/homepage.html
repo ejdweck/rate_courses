@@ -30,7 +30,7 @@
 					<h6 class="card-subtitle text-muted">Intro To Artificial Intelligence and Systems Engineering</h6>
 	    	</div>
 		    <div class="card-body text-dark" data-toggle="modal" data-target=".review-{{course.reviewId}}">
-				<div class="modal fade review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+				<div class="modal fade course-review-modal review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 				  <div class="modal-dialog modal-lg ">
 				    <div class="modal-content">
 				    	<div class="modal-header">
@@ -101,19 +101,19 @@
 					<span>{{course.rating}}/10</span>
 			    </div>
 			    <div class="course-tags-card">
-				        {% if course.courseReviewTagId.weedOutCourse == 1 %}
-					        <span class="badge badge-pill badge-danger"> </span>
-				        {% endif %}
-						{% if course.courseReviewTagId.interestingContent == 1 %}
-					        <span class="badge badge-pill badge-primary"> </span>
-				        {% endif %}
-				        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
-					        <span class="badge badge-pill badge-warning"> </span>
-				        {% endif %}
-						{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
-					        <span class="badge badge-pill badge-info"> </span>
-				        {% endif %}
-			    	</div>
+			        {% if course.courseReviewTagId.weedOutCourse == 1 %}
+				        <span class="badge badge-pill badge-danger"> </span>
+			        {% endif %}
+					{% if course.courseReviewTagId.interestingContent == 1 %}
+				        <span class="badge badge-pill badge-primary"> </span>
+			        {% endif %}
+			        {% if course.courseReviewTagId.lotsOfHomework == 1 %}
+				        <span class="badge badge-pill badge-warning"> </span>
+			        {% endif %}
+					{% if course.courseReviewTagId.mandatoryAttendance == 1 %}
+				        <span class="badge badge-pill badge-info"> </span>
+			        {% endif %}
+		    	</div>
 		    </div>
 		    <div class="card-footer">
 		      <small class="text-dark">Reviewed on {{course.reviewDate}}</small>
