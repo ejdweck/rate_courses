@@ -15,16 +15,10 @@ def homepage(request):
     # get course review objects for rendering on the homepage
     #course_reviews_list = CourseReview.objects.all().order_by('reviewDate')
     course_review_list = CourseReview.objects.all()
-    page = request.GET.get('page', 1)
 
-    paginator = Paginator(course_review_list, 6)
-    try:
-        course_reviews = paginator.page(page)
-    except PageNotAnInteger:
-        course_reviews = paginator.page(1)
-    except EmptyPage:
-        course_reviews = paginator.page(paginator.num_pages)
-
+    # get page objects
+    course_reviews = create_pages_object(request, course_review_list)
+   
     # list including necessary data for html blog tags (form, courses, instructurs, course_reviews)
     argumentList = modal_form(request)
     return render(request, 'homepage.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
@@ -45,21 +39,6 @@ def course_reviews(request):
     course_reviews = CourseReview.objects.all().order_by('reviewDate')
     return render(request, 'course_reviews.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
 
-def signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            print("in signup")
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('homepage')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
-
 def search(request):
     if request.method == 'GET': # If the form is submitted
         search_query = request.GET.get('searchbox')
@@ -71,6 +50,17 @@ def search(request):
         for c in course_reviews:
             print(c.instructorId.lastName)
         return render(request, 'search.html', {'courses': courses, 'course_reviews': course_reviews})
+
+def create_pages_object(request, objectList):
+    page = request.GET.get('page', 1)
+    paginator = Paginator(objectList, 6)
+    try:
+        objects = paginator.page(page)
+    except PageNotAnInteger:
+        objects = paginator.page(1)
+    except EmptyPage:
+        objects = paginator.page(paginator.num_pages)
+    return objects
 
 def modal_form(request):
     if request.method == 'GET':
