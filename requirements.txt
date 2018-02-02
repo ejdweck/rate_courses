@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-=======
 certifi==2017.11.5
 chardet==3.0.4
 dj-database-url==0.4.2
 Django==2.0.1
 django-bootstrap4==0.0.5
+django-watson==1.5.0
 django-widget-tweaks==1.4.1
 flake8==3.5.0
 gunicorn==19.7.1
@@ -12,6 +11,8 @@ idna==2.6
 mccabe==0.6.1
 numpy==1.14.0
 pandas==0.22.0
+parse==1.8.2
+parse-type==0.4.2
 pew==1.1.2
 pipenv==9.0.3
 pycodestyle==2.3.1
@@ -19,9 +20,7 @@ pyflakes==1.6.0
 python-dateutil==2.6.1
 pytz==2017.3
 requests==2.18.4
-selenium==3.8.1
 six==1.11.0
 urllib3==1.22
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
->>>>>>> 37fe70affaebce5ab6d68a9f99f3c29a6450ead8
