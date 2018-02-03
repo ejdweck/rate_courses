@@ -11,6 +11,8 @@ from watson import search as watson
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+search_query = ""
+
 def homepage(request):
     # get course review objects for rendering on the homepage
     #course_reviews_list = CourseReview.objects.all().order_by('reviewDate')
@@ -31,7 +33,12 @@ def about(request):
 def courses(request):
     # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
     argumentList = modal_form(request)
-    return render(request, 'courses.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2]})
+
+    courses = Course.objects.all()
+
+    courses = create_pages_object(request, courses)
+
+    return render(request, 'courses.html', {'form':argumentList[0],'courses':courses,'instructors':argumentList[2]})
 
 def course_reviews(request):
     # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
@@ -41,15 +48,28 @@ def course_reviews(request):
 
 def search(request):
     if request.method == 'GET': # If the form is submitted
-        search_query = request.GET.get('searchbox')
+        search_query_local = request.GET.get('searchbox')
         # search on Course table
-        courses = watson.filter(Course, search_query)
-        # search on CourseReview table
-        course_reviews = watson.filter(CourseReview, search_query)
-        print(course_reviews)
-        for c in course_reviews:
-            print(c.instructorId.lastName)
-        return render(request, 'search.html', {'courses': courses, 'course_reviews': course_reviews})
+        if search_query_local is not None:
+            print("test1")
+            courses = watson.filter(Course, search_query_local)
+            # create page objects with orginal query
+            courses_pages = create_pages_object(request, courses)
+
+            print (courses_pages)
+            # save local search_query to global var
+            global search_query
+            search_query = search_query_local
+            return render(request, 'search.html', {'courses': courses_pages})
+        else:
+            print("test2")
+            courses = watson.filter(Course, search_query)
+
+            # create page objects with orginal query
+            courses_pages = create_pages_object(request, courses)
+            print (courses_pages)
+
+            return render(request, 'search.html', {'courses': courses_pages})
 
 def create_pages_object(request, objectList):
     page = request.GET.get('page', 1)
@@ -59,6 +79,7 @@ def create_pages_object(request, objectList):
     except PageNotAnInteger:
         objects = paginator.page(1)
     except EmptyPage:
+        print("EMPTY PAGE FUCK")
         objects = paginator.page(paginator.num_pages)
     return objects
 
@@ -70,7 +91,6 @@ def modal_form(request):
         # get instructors names for auto complete
         instructors = Instructor.objects.all()
         argumentList = [form, courses, instructors]
-        print(argumentList)
         return argumentList # 'courses': courses, 'instructors': instructors})
     else:
         form = AddCourseReviewForm(request.POST,auto_id=True)
@@ -79,7 +99,6 @@ def modal_form(request):
         # get instructors names for auto complete
         instructors = Instructor.objects.all()
         argumentList = [form, courses, instructors]
-        print(argumentList)
         if form.is_valid():
             # parse course department and course number from single field on form
             courseDepartmentIndex = 0

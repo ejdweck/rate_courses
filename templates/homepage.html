@@ -121,33 +121,32 @@
 		</div>
 	{% endfor %}
 	</div>
-</div>
-
-{% if course_reviews.has_other_pages %}
-  <ul class="pagination justify-content-center">
-    {% if course_reviews.has_previous %}
-		<li class="page-item">
-	      <a class="page-link" href="?page={{ course_reviews.previous_page_number }}" tabindex="-1">Previous</a>
+	{% if course_reviews.has_other_pages %}
+	  <ul class="pagination justify-content-center">
+	    {% if course_reviews.has_previous %}
+			<li class="page-item">
+		      <a class="page-link" href="?page={{ course_reviews.previous_page_number }}" tabindex="-1">Previous</a>
+		    </li>
+	    {% else %}
+	      	<li class="disabled"></li>
+	    {% endif %}
+	    {% for i in course_reviews.paginator.page_range %}
+	      {% if course_reviews.number == i %}
+	        <li class="active">
+	        	<a class="page-link">{{ i }}<span class="sr-only">(current)</span></a>
+	        </li>
+	      {% elif i > course_reviews.number|add:'-3' and i < course_reviews.number|add:'3' %}
+		    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+	      {% endif %}
+	    {% endfor %}
+	    {% if course_reviews.has_next %}
+	    <li class="page-item">
+	    	<a class="page-link" href="?page={{ course_reviews.next_page_number }}">Next</a>
 	    </li>
-    {% else %}
-      	<li class="disabled"></li>
-    {% endif %}
-    {% for i in course_reviews.paginator.page_range %}
-      {% if course_reviews.number == i %}
-        <li class="active">
-        	<a class="page-link">{{ i }}<span class="sr-only">(current)</span></a>
-        </li>
-      {% else %}
-	    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if course_reviews.has_next %}
-    <li class="page-item">
-    	<a class="page-link" href="?page={{ course_reviews.next_page_number }}">Next</a>
-    </li>
-    {% else %}
-      <li class="disabled"></li>
-    {% endif %}
-  </ul>
-{% endif %}
+	    {% else %}
+	      <li class="disabled"></li>
+	    {% endif %}
+	  </ul>
+	{% endif %}
+</div>
 {% endblock %}
