@@ -22,36 +22,64 @@
 	<h2>Courses offered at UW Madison</h2>
 	<div class="card-deck">
 	 {% for course in courses %}
-	    <div class="card border-dark mb-3 color{{ course.averageRating|make_list|first }}" id="card_box" data-toggle="modal" data-target=".bd-example-modal-lg">
-	    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
-			<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			  <div class="modal-dialog modal-lg">
-			    <div class="modal-content">
-			    	<div class="modal-header">
-				    	<h5 class="modal-title" id="exampleModalLongTitle">Course: {{course.courseDepartment}} {{course.courseNumber}}</h5>
-				    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				    		<span aria-hidden="true">&times;</span>
-				    	</button>
+	    <div class="card border-dark mb-3 color{{course.rating}}" id="card_box">
+	    	<div class="card-header">
+		    	    <h6 >{{course.courseDepartment}}{{course.courseNumber}}</h6>
+					<h6 class="card-subtitle text-muted">Intro To Artificial Intelligence and Systems Engineering</h6>
+	    	</div>
+		    <div class="card-body text-dark" data-toggle="modal" data-target=".review-{{course.reviewId}}">
+				<div class="modal fade course-review-modal review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-lg ">
+				    <div class="modal-content">
+				    	<div class="modal-header">
+					    	<h5 class="modal-title" id="course-code-modal">{{course.courseDepartment}}{{course.courseNumber}}</h5>
+					    </div>
+	  			        <div class="modal-body">
+					    	<h5 class="modal-title text-muted" id="course-title-modal">{{course.courseName}}</h5>
+					    	<div class="row">
+					    		<div class="col-md-6">
+							    	
+						    	</div>
+						    	<div class="col-md-6">
+									<canvas id="pie-chart" width="20" height="10"></canvas>
+									<script>
+									new Chart(document.getElementById("pie-chart"), {
+									    type: 'pie',
+									    data: {
+									      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+									      datasets: [{
+									        label: "Population (millions)",
+									        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+									        data: [2478,5267,734,784,433]
+									      }]
+									    },
+									    options: {
+									      title: {
+									        display: true,
+									        text: 'Predicted world population (millions) in 2050'
+									      }
+									    }
+									});	
+									</script>
+						    	</div>
+					    	</div>
+					    </div>
+					    <div class="modal-footer">
+						    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					    </div>
 				    </div>
-  			        <div class="modal-body">
-				    </div>
-				    <div class="modal-footer">
-					    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					    <button type="button" class="btn btn-primary">Save changes</button>
-				    </div>
-			    </div>
-			  </div>
-			</div>
-	    	<div class="card-header">{{course.courseDepartment}}: {{course.courseNumber}}</div>
-		    <div class="card-body text-dark">
-		      <h4 class="card-title"></h4>
-		      <p class="card-text">Average Rating: {{course.averageRating}}</p>
-		      <p class="card-text">Number of Ratings: {{course.numberOfRatings}}</p>
+				  </div>
+				</div>
+		        <div class="card review-card">
+		        </div>
 		    </div>
+			<p class="card-text">Average Rating: {{course.averageRating}}</p>
+  	        <p class="card-text">Number of Ratings: {{course.numberOfRatings}}</p>
 		    <div class="card-footer">
 		      <small class="text-muted"></small>
 		    </div>
-	 	</div>
+		</div>
+
 	  {% endfor %}
 	</div>
 </div>
