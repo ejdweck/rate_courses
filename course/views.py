@@ -9,10 +9,22 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from watson import search as watson
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def homepage(request):
     # get course review objects for rendering on the homepage
-    course_reviews = CourseReview.objects.all().order_by('reviewDate')[:9]
+    #course_reviews_list = CourseReview.objects.all().order_by('reviewDate')
+    course_review_list = CourseReview.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(course_review_list, 6)
+    try:
+        course_reviews = paginator.page(page)
+    except PageNotAnInteger:
+        course_reviews = paginator.page(1)
+    except EmptyPage:
+        course_reviews = paginator.page(paginator.num_pages)
+
     # list including necessary data for html blog tags (form, courses, instructurs, course_reviews)
     argumentList = modal_form(request)
     return render(request, 'homepage.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
