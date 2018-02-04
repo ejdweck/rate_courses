@@ -7,6 +7,7 @@ a:active {color: black;}    /* selected link */
 /* Center all headers for ease of use*/
 h1, h2, h3, h4, h5, h6 {
 	text-align: center;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 /* rules for cards & elements within cards */
@@ -20,16 +21,19 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-title {
 	font-size: 0.85em;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .card-text {
 	text-align: center;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .review-title {
 	margin-top: 1%;
 	margin-bottom: 1%;
 	text-align: center;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .review-text {
@@ -37,6 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin-left: 3%;
 	margin-right: 3%;
 	font-size: .95em;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .card-body {
@@ -84,14 +89,17 @@ h1, h2, h3, h4, h5, h6 {
 
 #course-code-modal {
 	margin: 0 auto;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 #course-title-modal {
 	text-align: center;
 	margin-bottom: 2%;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .homepage-text {
 	margin-top: 5%;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 		
 .search-homepage {
@@ -131,6 +139,7 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 
 #formTitle {
 	text-align: center;
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 .course-review-tag-btn {
@@ -193,7 +202,10 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 
 /* background color */
 body {
-	background-color: #ededed;
+	/*background-color: #ffa07a;  SALMON 
+	background-color: #ff9187; 
+	background-color: #ffa69e;*/
+	background-color: #FFA07A;
 }
 
 /* rules for registration forms */
@@ -243,5 +255,12 @@ body {
 
 
 
+/* navbar */
+.navbar-brand {
+	font-family: 'Oleo Script', cursive;
+	font-size: 2em;
+}
 
+.nav-item {
 
+}
