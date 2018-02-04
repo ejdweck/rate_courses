@@ -12,6 +12,8 @@ class Course(models.Model):
 	courseName = models.CharField(max_length=50)
 	averageRating = models.DecimalField(max_digits=3, decimal_places=1)
 	numberOfRatings = models.IntegerField()
+	credits = models.CharField(max_length=5)
+	courseInfo = models.CharField(max_length=400)
 
 class GradePoint(models.Model):
 	courseDepartment = models.CharField(max_length=3)
