@@ -39,36 +39,37 @@
       </div>
     </nav>
     <script>
-    $( "#courseDepartmentAndNumber" ).autocomplete({ delay: 0 });
  
     $(function() {
+      
+      var courseDeptAndNumber = [
+        {% for course in courses %}
+            "{{ course.courseDepartment}}{{course.courseNumber}}" {% if not forloop.last %},{% endif %}
+         {% endfor %}
+      ];
 
-    var courseDeptAndNumber = [
-      {% for course in courses %}
-          "{{ course.courseDepartment}}{{course.courseNumber}}" {% if not forloop.last %},{% endif %}
-       {% endfor %}
-    ];
+      var instructorNames = [
+         {% for name in instructors %}
+            "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
+         {% endfor %}
+      ];
 
-    var instructorNames = [
-       {% for name in instructors %}
-          "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
-       {% endfor %}
-    ];
+      $( "#courseDepartmentAndNumber" ).autocomplete({
+        source: function(request, response) {
+        var results = $.ui.autocomplete.filter(courseDeptAndNumber, request.term);        
+        response(results.slice(0, 10));
+      }
+      });
 
-    $( "#courseDepartmentAndNumber" ).autocomplete({
-      source: function(request, response) {
-      var results = $.ui.autocomplete.filter(courseDeptAndNumber, request.term);        
-      response(results.slice(0, 10));
-    }
+      $( "#instructorName" ).autocomplete({
+        source: function(request, response) {
+        var results = $.ui.autocomplete.filter(instructorNames, request.term);        
+        response(results.slice(0, 10));
+      }
+      });
+
     });
 
-    $( "#instructorName" ).autocomplete({
-      source: function(request, response) {
-      var results = $.ui.autocomplete.filter(instructorNames, request.term);        
-      response(results.slice(0, 10));
-    });
-
-    });
 
     $(function() {
       var rating = $('#ratingSlider').val();
