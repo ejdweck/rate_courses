@@ -1,4 +1,9 @@
 
+a:link {color: black;}      /* unvisited link */
+a:visited {color: black;}   /* visited link */
+a:hover {color: black;}     /* mouse over link */
+a:active {color: black;}    /* selected link */
+
 /* Center all headers for ease of use*/
 h1, h2, h3, h4, h5, h6 {
 	text-align: center;
@@ -203,4 +208,40 @@ body {
 #course-tag {
 	margin: 1% 1% 1% 1%;
 }
+
+
+/* Course Detail Page Rules */
+#course-detail-code {
+	text-align: center;
+	margin-top: 3%;
+}
+
+#course-detail-name {
+	text-align: center;
+}
+
+#course-detail-description {
+	text-align: center;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+#course-detail-credits {
+	text-align: center;
+}
+
+#card-box-card-detail {
+	min-width: 20rem;
+    max-width: 20rem;
+    min-height: 25rem;
+    max-height: 25rem;
+    margin: 5% 5% 5% 5%;
+}
+
+#myChart {
+}
+
+
+
+
 

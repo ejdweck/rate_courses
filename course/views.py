@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from watson import search as watson
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import get_object_or_404 
 
 search_query = ""
 
@@ -19,7 +20,7 @@ def homepage(request):
     course_review_list = CourseReview.objects.all()
 
     # get page objects
-    course_reviews = create_pages_object(request, course_review_list)
+    course_reviews = create_pages_object_limit_6(request, course_review_list)
    
     # list including necessary data for html blog tags (form, courses, instructurs, course_reviews)
     argumentList = modal_form(request)
@@ -30,23 +31,22 @@ def about(request):
     argumentList = modal_form(request)
     return render(request, 'about.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2]})
 
-def courses(request):
-    # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
+def course_detail(request, pk):
+    # get course object to render a page for
+    course = get_object_or_404(Course, pk=pk)
+
+    course_department = course.courseDepartment
+    course_number = course.courseNumber
+
+    course_reviews = CourseReview.objects.filter(courseId=course)
+    course_reviews_pages = create_pages_object_limit_4(request, course_reviews)
+
     argumentList = modal_form(request)
 
-    courses = Course.objects.all()
-
-    courses = create_pages_object(request, courses)
-
-    return render(request, 'courses.html', {'form':argumentList[0],'courses':courses,'instructors':argumentList[2]})
-
-def course_reviews(request):
-    # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
-    argumentList = modal_form(request)
-    course_reviews = CourseReview.objects.all().order_by('reviewDate')
-    return render(request, 'course_reviews.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
+    return render(request, 'course_detail.html', {'course': course,'course_reviews':course_reviews_pages, 'form':argumentList[0]})
 
 def search(request):
+    argumentList = modal_form(request)
     if request.method == 'GET': # If the form is submitted
         search_query_local = request.GET.get('searchbox')
         # search on Course table
@@ -54,26 +54,39 @@ def search(request):
             print("test1")
             courses = watson.filter(Course, search_query_local)
             # create page objects with orginal query
-            courses_pages = create_pages_object(request, courses)
-
+            courses_pages = create_pages_object_limit_6(request, courses)
             print (courses_pages)
+
             # save local search_query to global var
             global search_query
             search_query = search_query_local
-            return render(request, 'search.html', {'courses': courses_pages})
+
+            return render(request, 'search.html', {'courses': courses_pages, 'form': argumentList[0]})
         else:
             print("test2")
             courses = watson.filter(Course, search_query)
 
             # create page objects with orginal query
-            courses_pages = create_pages_object(request, courses)
+            courses_pages = create_pages_object_limit_6(request, courses)
             print (courses_pages)
 
-            return render(request, 'search.html', {'courses': courses_pages})
+            return render(request, 'search.html', {'courses': courses_pages, 'form': argumentList[0]})
 
-def create_pages_object(request, objectList):
+def create_pages_object_limit_6(request, objectList):
     page = request.GET.get('page', 1)
     paginator = Paginator(objectList, 6)
+    try:
+        objects = paginator.page(page)
+    except PageNotAnInteger:
+        objects = paginator.page(1)
+    except EmptyPage:
+        print("EMPTY PAGE FUCK")
+        objects = paginator.page(paginator.num_pages)
+    return objects
+
+def create_pages_object_limit_4(request, objectList):
+    page = request.GET.get('page', 1)
+    paginator = Paginator(objectList, 4)
     try:
         objects = paginator.page(page)
     except PageNotAnInteger:
@@ -142,12 +155,15 @@ def modal_form(request):
             numRatings = 0
 
             # check if course already exists in database by querying
-            course = Course.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber)
+            try:
+                course = Course.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).get()
+            except ObjectDoesNotExist:
+                course = None
 
             # if the course doesn't exist...
-            if not course.count():
+            if not course:
                 # create course
-                new_course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
+                course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
 
                 # instructor object to pass into course review as we linked the models via Foreign Keys
                 instructorObject = ""
@@ -166,8 +182,7 @@ def modal_form(request):
                 
                 # add the course review
                 courseReview = CourseReview.objects.create(
-                    courseDepartment = courseDepartment,
-                    courseNumber = courseNumber,
+                    courseId = course,
                     instructorId = instructorObject,
                     courseReviewTagId = courseReviewTag,
                     review = review,
@@ -176,7 +191,7 @@ def modal_form(request):
                 ) 
 
                 # generate the course rating
-                courseRatingAvg = CourseReview.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).aggregate(Avg('rating'))
+                courseRatingAvg = CourseReview.objects.filter(courseId=course).aggregate(Avg('rating'))
                 # update courses avg rating
                 course = Course.objects.get(courseDepartment=courseDepartment,courseNumber=courseNumber)
                 course.averageRating = courseRatingAvg['rating__avg']
@@ -204,8 +219,7 @@ def modal_form(request):
 
                 # if course exists, just add course on the id of the instructor from instructor table
                 courseReview = CourseReview.objects.create(
-                    courseDepartment = courseDepartment,
-                    courseNumber = courseNumber,
+                    courseId = course,
                     instructorId = instructorObject,
                     courseReviewTagId = courseReviewTag,
                     review = review,
@@ -214,9 +228,9 @@ def modal_form(request):
                 )
 
                 # generate the course rating
-                courseRatingAvg = CourseReview.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).aggregate(Avg('rating'))
+                courseRatingAvg = CourseReview.objects.filter(courseId=course).aggregate(Avg('rating'))
                 # update courses avg rating
-                course = Course.objects.get(courseDepartment=courseDepartment,courseNumber=courseNumber)
+                course = Course.objects.get(courseDepartment=course.courseDepartment,courseNumber=course.courseNumber)
                 course.averageRating = courseRatingAvg['rating__avg']
                 # update number of reviews by adding 1
                 course.numberOfRatings += 1

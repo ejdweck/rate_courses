@@ -25,19 +25,19 @@
 	<div class="card-deck">
 	{% for course in course_reviews %}
 	    <div class="card border-dark mb-3 color{{course.rating}}" id="card_box">
-	    	<div class="card-header">
-		    	    <h6 >{{course.courseDepartment}}{{course.courseNumber}}</h6>
+	    	<a href="/course/{{course.courseId.courseId}}" class="card-header">
+		    	    <h6 >{{course.courseId.courseDepartment}}{{course.courseId.courseNumber}}</h6>
 					<h6 class="card-subtitle text-muted">Intro To Artificial Intelligence and Systems Engineering</h6>
-	    	</div>
+	    	</a>
 		    <div class="card-body text-dark" data-toggle="modal" data-target=".review-{{course.reviewId}}">
 				<div class="modal fade course-review-modal review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 				  <div class="modal-dialog modal-lg ">
 				    <div class="modal-content">
 				    	<div class="modal-header">
-					    	<h5 class="modal-title" id="course-code-modal">{{course.courseDepartment}}{{course.courseNumber}}</h5>
+					    	<h5 class="modal-title" id="course-code-modal">{{course.courseId.courseDepartment}}{{course.courseId.courseNumber}}</h5>
 					    </div>
 	  			        <div class="modal-body">
-					    	<h5 class="modal-title text-muted" id="course-title-modal">{{course.courseName}}</h5>
+					    	<h5 href="/course/{{course.courseId.courseId}}" class="modal-title text-muted" id="course-title-modal">{{course.courseId.courseName}}</h5>
 					    	<div class="row">
 					    		<div class="col-md-6">
 							    	<div class="card review-card">

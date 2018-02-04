@@ -17,7 +17,7 @@
 	<h2>Courses offered at UW Madison</h2>
 	<div class="card-deck">
 	 {% for course in courses %}
-	    <div class="card border-dark mb-3 color{{course.rating}}" id="card_box">
+	    <a href="/course/{{course.courseId}}" class="card border-dark mb-3 color{{course.rating}}" id="card_box">
 	    	<div class="card-header">
 		    	    <h6 >{{course.courseDepartment}}{{course.courseNumber}}</h6>
 					<h6 class="card-subtitle text-muted">{{course.courseName}}</h6>
@@ -73,7 +73,7 @@
 		    <div class="card-footer">
 		      <small class="text-muted"></small>
 		    </div>
-		</div>
+		</a>
 	  {% endfor %}
 	</div>
 

@@ -6,14 +6,12 @@ class Instructor(models.Model):
 	lastName = models.CharField(max_length=20)
 
 class Course(models.Model):
-    courseDepartment = models.CharField(max_length=3)
-    courseNumber = models.CharField(max_length=3)
-    courseName = models.CharField(max_length=50)
-    averageRating = models.DecimalField(max_digits=3, decimal_places=1)
-    numberOfRatings = models.IntegerField()
-
-    class Meta:
-        unique_together = (('courseDepartment', 'courseNumber'),)
+	courseId = models.AutoField(primary_key=True)
+	courseDepartment = models.CharField(max_length=3)
+	courseNumber = models.CharField(max_length=3)
+	courseName = models.CharField(max_length=50)
+	averageRating = models.DecimalField(max_digits=3, decimal_places=1)
+	numberOfRatings = models.IntegerField()
 
 class GradePoint(models.Model):
 	courseDepartment = models.CharField(max_length=3)
@@ -44,9 +42,8 @@ class CourseTag(models.Model):
 
 
 class CourseReview(models.Model):
-	courseDepartment = models.CharField(max_length=3)
-	courseNumber = models.CharField(max_length=3)
 	reviewId = models.AutoField(primary_key=True)
+	courseId = models.ForeignKey(Course, on_delete = models.CASCADE)
 	instructorId = models.ForeignKey(Instructor, on_delete = models.CASCADE)
 	courseReviewTagId = models.ForeignKey(CourseReviewTag, on_delete = models.CASCADE)
 	review = models.CharField(max_length=50)
