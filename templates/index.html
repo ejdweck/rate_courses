@@ -39,6 +39,8 @@
       </div>
     </nav>
     <script>
+    $( "#courseDepartmentAndNumber" ).autocomplete({ delay: 0 });
+ 
     $(function() {
 
     var courseDeptAndNumber = [
@@ -54,11 +56,16 @@
     ];
 
     $( "#courseDepartmentAndNumber" ).autocomplete({
-      source: courseDeptAndNumber
+      source: function(request, response) {
+      var results = $.ui.autocomplete.filter(courseDeptAndNumber, request.term);        
+      response(results.slice(0, 10));
+    }
     });
 
     $( "#instructorName" ).autocomplete({
-      source: instructorNames
+      source: function(request, response) {
+      var results = $.ui.autocomplete.filter(instructorNames, request.term);        
+      response(results.slice(0, 10));
     });
 
     });
