@@ -39,6 +39,8 @@
 	  			        <div class="modal-body">
 					    	<h5 href="/course/{{course.courseId.courseId}}" class="modal-title text-muted" id="course-title-modal">{{course.courseId.courseName}}</h5>
 					    	<div class="row">
+					    		<p id="course-credits-modal">{{course.courseId.credits}} credits</p>
+					    		<p id="course-info-modal">{{course.courseId.courseInfo}}</p>
 					    		<div class="col-md-6">
 							    	<div class="card review-card">
 								        <p class="review-title">Review</p>
@@ -46,25 +48,28 @@
 							        </div>
 						    	</div>
 						    	<div class="col-md-6">
-									<canvas id="pie-chart" width="20" height="10"></canvas>
+						    		<p id="chart-title-modal">Fall 2017 Grade Data</p>
+									<canvas id="pie-chart{{course.reviewId}}" width="20" height="10"></canvas>
 									<script>
-									new Chart(document.getElementById("pie-chart"), {
-									    type: 'pie',
+									new Chart(document.getElementById("pie-chart{{course.reviewId}}"),   {
+									    type: 'doughnut',
 									    data: {
-									      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-									      datasets: [{
-									        label: "Population (millions)",
-									        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-									        data: [2478,5267,734,784,433]
+										    labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+										    datasets: [{
+									        label: "Fall 2017 Grade Data",
+									        backgroundColor: ["#FFC09F", "#FFEE93","#DDDBF1","#EAF9D9","#CCC7B9", "#A8CCC9", "#75B9BE"],
+									        data: [
+										        {{course.courseId.gradeDistributionDataId.a}},
+								            	{{course.courseId.gradeDistributionDataId.ab}},
+								            	{{course.courseId.gradeDistributionDataId.b}},
+								            	{{course.courseId.gradeDistributionDataId.bc}},
+								            	{{course.courseId.gradeDistributionDataId.c}},
+								            	{{course.courseId.gradeDistributionDataId.d}},
+								            	{{course.courseId.gradeDistributionDataId.f}},
+									        ]
 									      }]
 									    },
-									    options: {
-									      title: {
-									        display: true,
-									        text: 'Predicted world population (millions) in 2050'
-									      }
-									    }
-									});	
+									});
 									</script>
 						    	</div>
 					    	</div>

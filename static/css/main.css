@@ -78,6 +78,7 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 10rem;
     max-height: 10rem;
 	background-color: #ffcccc;
+	margin-top: 5%;
     margin-left: 2%;
     margin-right: 2%;
 }
@@ -85,6 +86,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Rules for Modal */
 .course-review-modal {
 	cursor: pointer;
+	margin-top: 5%;
 }
 
 #course-code-modal {
@@ -95,6 +97,20 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 	margin-bottom: 2%;
 	font-family: 'Roboto Condensed', sans-serif;
+}
+
+#course-credits-modal {
+	text-align: center;
+	margin: auto;
+}
+
+#course-info-modal {
+	text-align: center;
+	margin: 2% 5% 2% 5%;
+}
+
+#chart-title-modal {
+	text-align: center;
 }
 
 .homepage-text {
@@ -253,7 +269,14 @@ body {
 #myChart {
 }
 
+.course-card-chart {
+	margin: 5% 0% 0% 0%;
+	height: 40%	;
+}
 
+.course-card-text {
+	margin: auto; 
+}
 
 /* navbar */
 .navbar-brand {
