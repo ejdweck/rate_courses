@@ -33,9 +33,9 @@ def insert_tuples(cursor):
                 break
         course_dept = init_split[0][0:num_index]
         course_num = init_split[0][num_index:len(init_split[0])]
-        values = (course_dept, course_num, course_name, 0, 0, course_info, credits)
+        values = (course_dept, course_num, course_name, 0, 0, course_info, credits,0)
         print(values)
-        cursor.execute("INSERT INTO Course_Course (courseDepartment,courseNumber,courseName, averageRating, numberOfRatings, courseInfo, credits) VALUES (?,?,?,?,?,?,?)", values)
+        cursor.execute("INSERT INTO Course_Course (courseDepartment,courseNumber,courseName, averageRating, numberOfRatings, courseInfo, credits, gradeDistributionDataId_id) VALUES (?,?,?,?,?,?,?,?)", values)
 
 if __name__ == "__main__":
     connection = connect()

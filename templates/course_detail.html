@@ -17,10 +17,18 @@
 			var myChart = new Chart(ctx, {
 			    type: 'bar',
 			    data: {
-			        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+			        labels: ["A", "AB", "B", "BC", "C", "D"],
 			        datasets: [{
 			            label: '# of Votes',
-			            data: [{{course.averageRating}}, 19, 3, 5, 2, 3],
+			            data: [
+			            	{{course.gradeDistributionDataId.a}},
+			            	{{course.gradeDistributionDataId.ab}},
+			            	{{course.gradeDistributionDataId.b}},
+			            	{{course.gradeDistributionDataId.bc}},
+			            	{{course.gradeDistributionDataId.c}},
+			            	{{course.gradeDistributionDataId.d}},
+			            	{{course.gradeDistributionDataId.f}},
+			            ],
 			            backgroundColor: [
 			                'rgba(255, 99, 132, 0.2)',
 			                'rgba(54, 162, 235, 0.2)',
@@ -44,7 +52,8 @@
 			        scales: {
 			            yAxes: [{
 			                ticks: {
-			                    beginAtZero:true
+                				suggestedMin: 0,
+                    			suggestedMax: 40,
 			                }
 			            }]
 			        }

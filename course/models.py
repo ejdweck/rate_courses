@@ -5,6 +5,27 @@ class Instructor(models.Model):
 	firstName = models.CharField(max_length=20)
 	lastName = models.CharField(max_length=20)
 
+class GradeDistributionData(models.Model):
+	gradeDistributionDataId = models.AutoField(primary_key=True)
+	numberGrades = models.IntegerField()
+	averageGpa = models.DecimalField(max_digits=4, decimal_places=3) 
+	a = models.DecimalField(max_digits=3, decimal_places=1)
+	ab = models.DecimalField(max_digits=3, decimal_places=1)
+	b = models.DecimalField(max_digits=3, decimal_places=1)
+	bc = models.DecimalField(max_digits=3, decimal_places=1)
+	c = models.DecimalField(max_digits=3, decimal_places=1)
+	d = models.DecimalField(max_digits=3, decimal_places=1)
+	f = models.DecimalField(max_digits=3, decimal_places=1)
+	s = models.DecimalField(max_digits=3, decimal_places=1)
+	u = models.DecimalField(max_digits=3, decimal_places=1)
+	cr = models.DecimalField(max_digits=3, decimal_places=1)
+	n = models.DecimalField(max_digits=3, decimal_places=1)
+	p = models.DecimalField(max_digits=3, decimal_places=1)
+	i = models.DecimalField(max_digits=3, decimal_places=1)
+	nw = models.DecimalField(max_digits=3, decimal_places=1)
+	nr = models.DecimalField(max_digits=3, decimal_places=1)
+	o = models.DecimalField(max_digits=3, decimal_places=1)
+
 class Course(models.Model):
 	courseId = models.AutoField(primary_key=True)
 	courseDepartment = models.CharField(max_length=3)
@@ -14,19 +35,7 @@ class Course(models.Model):
 	numberOfRatings = models.IntegerField()
 	credits = models.CharField(max_length=5)
 	courseInfo = models.CharField(max_length=400)
-
-class GradePoint(models.Model):
-	courseDepartment = models.CharField(max_length=3)
-	courseNumber = models.CharField(max_length=3)
-	fallSem15 = models.DecimalField(max_digits=3, decimal_places=1)
-	springSem15 = models.DecimalField(max_digits=3, decimal_places=1)
-	fallSem16 = models.DecimalField(max_digits=3, decimal_places=1)
-	springSem16 = models.DecimalField(max_digits=3, decimal_places=1)
-	fallSem17 = models.DecimalField(max_digits=3, decimal_places=1)
-	springSem17 = models.DecimalField(max_digits=3, decimal_places=1)
-
-	class Meta:
-		unique_together = (('courseDepartment', 'courseNumber'),)
+	gradeDistributionDataId = models.ForeignKey(GradeDistributionData, on_delete = models.CASCADE)
 
 class CourseReviewTag(models.Model):
 	courseReviewTagId = models.AutoField(primary_key=True)
