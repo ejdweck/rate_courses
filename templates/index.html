@@ -139,16 +139,16 @@
                   <div class=row>
                     <div class="col">
                         <label for="courseDepartmentAndNumber">Course Code</label>
-                        {% render_field form.courseDepartmentAndNumber id+="courseDepartmentAndNumber" class+="form-control courseDepartmentAndNumber" placeholder="cs537" %}
-                          <small id="courseDepartmentAndNumber" class="form-text text-muted">Enter the course code exactly as it appears in the course guide - reviews with an incorrect course number may be subject to removal.</small>
+                        {% render_field form.courseDepartmentAndNumber id+="courseDepartmentAndNumber" class+="form-control courseDepartmentAndNumber" placeholder="AN SCI 200" %}
+                          <small id="courseDepartmentAndNumber" class="form-text text-muted">Enter the course code exactly as it appears in the course guide </small>
                       </div>
                   </div>
                   <br>
                   <div class=row>
                       <div class="col">
                         <label for="instructorName">Instructor Name</label>
-                          {% render_field form.instructorName id+="instructorName" class+="form-control instructorName" placeholder="Eric Clapton" %}
-                          <small id="instructorName" class="form-text text-muted">Seperate first and last name by whitespace.</small>
+                          {% render_field form.instructorName id+="instructorName" class+="form-control instructorName" placeholder="Kristaps Porzingis" %}
+                          <small id="instructorName" class="form-text text-muted"></small>
                       </div>
                   </div>
                   <br>
@@ -157,7 +157,7 @@
                         <label id="ratingSlider" for="rating">Rating</label>
                           {% render_field form.rating id+="rating" class+="form-control rating" placeholder="" %}
                             <span id="slider_value">5</span>
-                          <small id="rating" class="form-text text-muted">Rate from 1 to 10.</small>
+                          <small id="rating" class="form-text text-muted">Rate 1 to 10.</small>
                       </div>
                   </div>
                   <br>
@@ -177,8 +177,8 @@
                   <br>
                   <div class=row>
                       <div class="col">
-                        <label for="comments">Comments</label>
-                          {% render_field form.review id+="comments" class+="form-control review" placeholder="any comments about the course" %}
+                        <label for="comments">review</label>
+                          {% render_field form.review id+="comments" class+="form-control review" placeholder="What an interesting course!" %}
                           <small id="comments" class="form-text text-muted">Any comments to justify your rating. Common topics to include are instructor difficulty or hours spent per week.</small>
                       </div>
                   </div>

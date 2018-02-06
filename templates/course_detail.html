@@ -88,9 +88,9 @@
 								    	</div>
 								    	<div class="col-md-6">
 										    <p id="chart-title-modal">Fall 2017 Grade Data</p>
-											<canvas id="pie-chart{{course.reviewId}}" width="20" height="10"></canvas>
+											<canvas id="pie-chart{{course_review.reviewId}}" width="20" height="10"></canvas>
 											<script>
-											new Chart(document.getElementById("pie-chart{{course.reviewId}}"),   {
+											new Chart(document.getElementById("pie-chart{{course_review.reviewId}}"),   {
 											    type: 'doughnut',
 											    data: {
 												    labels: ["A", "AB", "B", "BC", "C", "D", "F"],

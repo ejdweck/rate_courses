@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.db import connection
 from course.forms import AddCourseReviewForm
-from course.models import CourseReview, Course, Instructor, CourseReviewTag
+from course.models import CourseReview, Course, Instructor, CourseReviewTag, GradeDistributionData
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -162,8 +162,30 @@ def modal_form(request):
 
             # if the course doesn't exist...
             if not course:
+                # create temp gradeDistributionData object to feed into course.
+                gradeDistributionDataObject = GradeDistributionData.objects.create(
+                    gradeDistributionDataId = 0,
+                    numberGrades = 0,
+                    averageGpa = 0,
+                    a = 0,
+                    ab = 0,
+                    b = 0,
+                    bc = 0,
+                    c = 0,
+                    d = 0,
+                    f = 0,
+                    s = 0,
+                    u = 0,
+                    cr = 0,
+                    n = 0,
+                    p = 0,
+                    i = 0,
+                    nw = 0,
+                    nr = 0,
+                    o = 0
+                )
                 # create course
-                course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings)
+                course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings,gradeDistributionDataId=gradeDistributionDataObject)
 
                 # instructor object to pass into course review as we linked the models via Foreign Keys
                 instructorObject = ""
