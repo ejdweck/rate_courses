@@ -17,14 +17,14 @@ search_query = ""
 def homepage(request):
     # get course review objects for rendering on the homepage
     #course_reviews_list = CourseReview.objects.all().order_by('reviewDate')
-    course_review_list = CourseReview.objects.all()
+    course_list = Course.objects.all()
 
     # get page objects
-    course_reviews = create_pages_object_limit_6(request, course_review_list)
+    courses = create_pages_object_limit_6(request, course_list)
    
     # list including necessary data for html blog tags (form, courses, instructurs, course_reviews)
     argumentList = modal_form(request)
-    return render(request, 'homepage.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2],'course_reviews':course_reviews})
+    return render(request, 'homepage.html', {'form':argumentList[0],'courses':courses,'instructors':argumentList[2]})
 
 def about(request):
     # list including necessary data for html block tags (form, courses, instructurs, course_reviews)

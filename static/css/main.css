@@ -62,7 +62,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .progress-bar {
+	/*
 	background-color: #ff6666;
+	*/
+	background-color: #FFFFFF;
 }
 
 .progress span {
@@ -77,7 +80,10 @@ h1, h2, h3, h4, h5, h6 {
 .review-card {
     min-height: 10rem;
     max-height: 10rem;
+    /*
 	background-color: #ffcccc;
+	*/
+	background-color: #FFFFFF;
 	margin-top: 5%;
     margin-left: 2%;
     margin-right: 2%;
@@ -209,7 +215,10 @@ body .ui-autocomplete .ui-menu-item .ui-state-focus {
 }
 */
 .body {
+	/*
 	background-color: grey;
+	*/
+	background-color: #FFFFFF;
 }
 
 /* about page rules */
@@ -221,8 +230,9 @@ body {
 	/*background-color: #ffa07a;  SALMON 
 	background-color: #ff9187; 
 	background-color: #ffa69e;
-	background-color: #FFA07A;*/
-	background-color: #ff9393;
+	background-color: #FFA07A;
+	background-color: #ff9393;*/
+	background-color: #FFFFFF;
 }
 
 /* rules for registration forms */
