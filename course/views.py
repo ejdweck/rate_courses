@@ -48,29 +48,27 @@ def course_detail(request, pk):
 def search(request):
     argumentList = modal_form(request)
     if request.method == 'GET': # If the form is submitted
-        search_query_local = request.GET.get('searchbox')
+        search_query = request.GET.get('searchbox')
         # search on Course table
-        if search_query_local is not None:
-            print("test1")
-            courses = watson.filter(Course, search_query_local)
+        if search_query is not None:
+            courses = watson.filter(Course, search_query)
             # create page objects with orginal query
             courses_pages = create_pages_object_limit_6(request, courses)
-            print (courses_pages)
-
-            # save local search_query to global var
-            global search_query
-            search_query = search_query_local
-
             return render(request, 'search.html', {'courses': courses_pages, 'form': argumentList[0]})
         else:
-            print("test2")
-            courses = watson.filter(Course, search_query)
-
-            # create page objects with orginal query
+            courses = Course.objects.all()
             courses_pages = create_pages_object_limit_6(request, courses)
-            print (courses_pages)
-
+            argumentList = modal_form(request)
+            print(search_query)
             return render(request, 'search.html', {'courses': courses_pages, 'form': argumentList[0]})
+
+    elif request.method == 'POST':
+        courses = Course.objects.all()
+        course_pages = create_pages_object_limit_6(request, courses)
+        argumentList = modal_form(request)
+
+        return render(request, 'search.html', {'courses': course_pages, 'form': argumentList[0]})
+
 
 def create_pages_object_limit_6(request, objectList):
     page = request.GET.get('page', 1)
@@ -125,7 +123,6 @@ def modal_form(request):
             # force courseDepartment to uppercase letters for consistency in database
             courseDepartment = courseDepartment.upper()
             courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
-
             # parse review from form on field
             review = form.cleaned_data['review']
             # parse rating from form on field
@@ -135,13 +132,10 @@ def modal_form(request):
             interestingContent = form.cleaned_data['interestingContent']
             lotsOfHomework = form.cleaned_data['lotsOfHomework']
             mandatoryAttendance = form.cleaned_data['mandatoryAttendance']
-
             # create CourseReviewTags object
             courseReviewTag = CourseReviewTag.objects.create(weedOutCourse=weedOutButton, interestingContent=interestingContent, lotsOfHomework=lotsOfHomework, mandatoryAttendance=mandatoryAttendance) 
-
             # set the review date to the current day
             reviewDate = datetime.datetime.today()
-
             # parse instructor first name and last name into individual fields
             instructorName = form.cleaned_data['instructorName']
             names = instructorName.split()
@@ -153,109 +147,46 @@ def modal_form(request):
 
             avgRating = 0.0
             numRatings = 0
-
             # check if course already exists in database by querying
             try:
                 course = Course.objects.filter(courseDepartment=courseDepartment,courseNumber=courseNumber).get()
             except ObjectDoesNotExist:
                 course = None
+                print("course review not added because course not in database")
+                return argumentList;
 
-            # if the course doesn't exist...
-            if not course:
-                # create temp gradeDistributionData object to feed into course.
-                gradeDistributionDataObject = GradeDistributionData.objects.create(
-                    gradeDistributionDataId = 0,
-                    numberGrades = 0,
-                    averageGpa = 0,
-                    a = 0,
-                    ab = 0,
-                    b = 0,
-                    bc = 0,
-                    c = 0,
-                    d = 0,
-                    f = 0,
-                    s = 0,
-                    u = 0,
-                    cr = 0,
-                    n = 0,
-                    p = 0,
-                    i = 0,
-                    nw = 0,
-                    nr = 0,
-                    o = 0
-                )
-                # create course
-                course = Course.objects.create(courseDepartment=courseDepartment,courseNumber=courseNumber,courseName='',averageRating=avgRating,numberOfRatings=numRatings,gradeDistributionDataId=gradeDistributionDataObject)
+            # instructor object to pass into course review as we linked the models via Foreign Keys
+            instructorObject = ""
+            try:
+                # find out if we need to create a new instructor
+                instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
+                instructorObject = instructor
+            except ObjectDoesNotExist:
+                # add new instructor 
+                newInstructor = Instructor.objects.create(
+                    firstName=instructorFirstName,
+                    lastName=instructorLastName
+                    )
+                instructorId = newInstructor.instructorId
+                instructorObject = newInstructor
 
-                # instructor object to pass into course review as we linked the models via Foreign Keys
-                instructorObject = ""
+            # if course exists, just add course on the id of the instructor from instructor table
+            courseReview = CourseReview.objects.create(
+                courseId = course,
+                instructorId = instructorObject,
+                courseReviewTagId = courseReviewTag,
+                review = review,
+                rating = rating,
+                reviewDate = reviewDate
 
-                try:
-                    # find out if we need to create a new instructor
-                    instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorObject = instructor
-                except ObjectDoesNotExist:
-                    # create Instructor tuple if new instructor
-                    newInstructor = Instructor.objects.create(
-                        firstName=instructorFirstName,
-                        lastName=instructorLastName
-                        )
-                    instructorObject = newInstructor
-                
-                # add the course review
-                courseReview = CourseReview.objects.create(
-                    courseId = course,
-                    instructorId = instructorObject,
-                    courseReviewTagId = courseReviewTag,
-                    review = review,
-                    rating = rating,
-                    reviewDate = reviewDate 
-                ) 
-
-                # generate the course rating
-                courseRatingAvg = CourseReview.objects.filter(courseId=course).aggregate(Avg('rating'))
-                # update courses avg rating
-                course = Course.objects.get(courseDepartment=courseDepartment,courseNumber=courseNumber)
-                course.averageRating = courseRatingAvg['rating__avg']
-                # update number of reviews by adding 1
-                course.numberOfRatings += 1
-                # commit the changes
-                course.save()
-
-            else:
-                # instructor object to pass into course review as we linked the models via Foreign Keys
-                instructorObject = ""
-
-                try:
-                    # find out if we need to create a new instructor
-                    instructor = Instructor.objects.get(firstName=instructorFirstName,lastName=instructorLastName)
-                    instructorObject = instructor
-                except ObjectDoesNotExist:
-                    # add new instructor 
-                    newInstructor = Instructor.objects.create(
-                        firstName=instructorFirstName,
-                        lastName=instructorLastName
-                        )
-                    instructorId = newInstructor.instructorId
-                    instructorObject = newInstructor
-
-                # if course exists, just add course on the id of the instructor from instructor table
-                courseReview = CourseReview.objects.create(
-                    courseId = course,
-                    instructorId = instructorObject,
-                    courseReviewTagId = courseReviewTag,
-                    review = review,
-                    rating = rating,
-                    reviewDate = reviewDate
-                )
-
-                # generate the course rating
-                courseRatingAvg = CourseReview.objects.filter(courseId=course).aggregate(Avg('rating'))
-                # update courses avg rating
-                course = Course.objects.get(courseDepartment=course.courseDepartment,courseNumber=course.courseNumber)
-                course.averageRating = courseRatingAvg['rating__avg']
-                # update number of reviews by adding 1
-                course.numberOfRatings += 1
-                # commit the changes
-                course.save()
+            )
+            # generate the course rating
+            courseRatingAvg = CourseReview.objects.filter(courseId=course).aggregate(Avg('rating'))
+            # update courses avg rating
+            course = Course.objects.get(courseDepartment=course.courseDepartment,courseNumber=course.courseNumber)
+            course.averageRating = courseRatingAvg['rating__avg']
+            # update number of reviews by adding 1
+            course.numberOfRatings += 1
+            # commit the changes
+            course.save()
             return argumentList

@@ -7,8 +7,27 @@ class Instructor(models.Model):
 
 class GradeDistributionData(models.Model):
 	gradeDistributionDataId = models.AutoField(primary_key=True)
+	numberGrades = models.CharField(max_length=5)
+	averageGpa = models.CharField(max_length=5) 
+	a = models.CharField(max_length=5)
+	ab = models.CharField(max_length=5)
+	b = models.CharField(max_length=5) 
+	bc = models.CharField(max_length=5)
+	c = models.CharField(max_length=5)
+	d = models.CharField(max_length=5)
+	f = models.CharField(max_length=5)
+	s = models.CharField(max_length=5)
+	u = models.CharField(max_length=5)
+	cr = models.CharField(max_length=5)
+	n = models.CharField(max_length=5)
+	p = models.CharField(max_length=5)
+	i = models.CharField(max_length=5)
+	nw = models.CharField(max_length=5)
+	nr = models.CharField(max_length=5)
+	o = models.CharField(max_length=5)
+	'''
 	numberGrades = models.IntegerField()
-	averageGpa = models.DecimalField(max_digits=4, decimal_places=3) 
+	averageGpa = models.DecimalField(max_digits=5, decimal_places=5) 
 	a = models.DecimalField(max_digits=3, decimal_places=1)
 	ab = models.DecimalField(max_digits=3, decimal_places=1)
 	b = models.DecimalField(max_digits=3, decimal_places=1)
@@ -25,6 +44,17 @@ class GradeDistributionData(models.Model):
 	nw = models.DecimalField(max_digits=3, decimal_places=1)
 	nr = models.DecimalField(max_digits=3, decimal_places=1)
 	o = models.DecimalField(max_digits=3, decimal_places=1)
+	'''
+class GradeDistributionSemester(models.Model):
+	gradeDistributionSemesterId = models.AutoField(primary_key=True)
+	fall15 = models.ForeignKey(GradeDistributionData, related_name='fall15', on_delete = models.CASCADE)
+	spring15 = models.ForeignKey(GradeDistributionData, related_name='spring15', on_delete = models.CASCADE)
+	fall16 = models.ForeignKey(GradeDistributionData, related_name='fall16', on_delete = models.CASCADE)
+	spring16 = models.ForeignKey(GradeDistributionData, related_name='spring16', on_delete = models.CASCADE)
+	fall17 = models.ForeignKey(GradeDistributionData, related_name='fall17', on_delete = models.CASCADE)
+	spring17 = models.ForeignKey(GradeDistributionData, related_name='spring17', on_delete = models.CASCADE)
+	fall18 = models.ForeignKey(GradeDistributionData, related_name='fall18', on_delete = models.CASCADE)
+	spring18 = models.ForeignKey(GradeDistributionData, related_name='spring18', on_delete = models.CASCADE)
 
 class Course(models.Model):
 	courseId = models.AutoField(primary_key=True)
