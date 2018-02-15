@@ -14,7 +14,7 @@
 		        <button value="Search" type="text" id="search-submit" class="btn btn-secondary">Search</a>
 		      </span>
 		    </div>
-	        <small id="help" class="form-text text-muted">Confused about ratings or card colors? Check out the <a href="{% url 'about' %}">about page</a> </small>
+	        <small id="help" class="form-text text-muted">Confused about reviews or grade data? Check out the <a href="{% url 'about' %}">about page</a> </small>
 		</form>
 	  </div>
 	</div>
@@ -30,52 +30,13 @@
 					<h6 class="card-subtitle text-muted">{{course.courseName}}</h6>
 	    	</div>
 		    <div class="card-body text-dark" data-toggle="modal" data-target=".review-{{course.reviewId}}">
-				<div class="modal fade course-review-modal review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-				  <div class="modal-dialog modal-lg ">
-				    <div class="modal-content">
-				    	<div class="modal-header">
-					    	<h5 class="modal-title" id="course-code-modal">{{course.courseDepartment}}{{course.courseNumber}}</h5>
-					    </div>
-	  			        <div class="modal-body">
-					    	<h5 class="modal-title text-muted" id="course-title-modal">{{course.courseName}}</h5>
-					    	<div class="row">
-					    		<div class="col-md-6">
-							    	
-						    	</div>
-						    	<div class="col-md-6">
-									<canvas id="pie-chart" width="20" height="10"></canvas>
-									<script>
-									new Chart(document.getElementById("pie-chart"), {
-									    type: 'pie',
-									    data: {
-									      labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-									      datasets: [{
-									        label: "Population (millions)",
-									        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-									        data: [2478,5267,734,784,433]
-									      }]
-									    },
-									    options: {
-									      title: {
-									        display: true,
-									        text: 'Predicted world population (millions) in 2050'
-									      }
-									    }
-									});	
-									</script>
-						    	</div>
-					    	</div>
-					    </div>
-					    <div class="modal-footer">
-						    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					    </div>
-				    </div>
-				  </div>
-				</div>
 				<p class="card-text course-card-text">Average Rating: {{course.averageRating}}</p>
   	        	<p class="card-text course-card-text">Number of Ratings: {{course.numberOfRatings}}</p>
-				<div class="card border-dark course-card-chart">
-					<canvas id="Chart{{course.courseId}}"></canvas>
+  	        	<div class="course-card-grade-chart">
+	  	        	<p class="card-text course-card-text">Fall 2017 Grade Data</p>
+					<div class="card border-dark course-card-chart">
+						<canvas id="Chart{{course.courseId}}"></canvas>
+					</div>
 				</div>
 				<script>
 				var ctx = document.getElementById("Chart{{course.courseId}}").getContext('2d');
@@ -84,15 +45,15 @@
 				    data: {
 				        labels: ["A", "AB", "B", "BC", "C", "D"],
 				        datasets: [{
-				            label: 'Fall 2017 Grade Data',
+				            label: '%',
 				            data: [
-				            	{{course.gradeDistributionDataId.a}},
-				            	{{course.gradeDistributionDataId.ab}},
-				            	{{course.gradeDistributionDataId.b}},
-				            	{{course.gradeDistributionDataId.bc}},
-				            	{{course.gradeDistributionDataId.c}},
-				            	{{course.gradeDistributionDataId.d}},
-				            	{{course.gradeDistributionDataId.f}},
+				            	{{course.gradeDistributionSemesterId.fall17.a}},
+				            	{{course.gradeDistributionSemesterId.fall17.ab}},
+				            	{{course.gradeDistributionSemesterId.fall17.b}},
+				            	{{course.gradeDistributionSemesterId.fall17.bc}},
+				            	{{course.gradeDistributionSemesterId.fall17.c}},
+				            	{{course.gradeDistributionSemesterId.fall17.d}},
+				            	{{course.gradeDistributionSemesterId.fall17.f}},
 				            ],
 				            backgroundColor: [
 				                'rgba(255, 99, 132, 0.2)',
@@ -114,6 +75,9 @@
 				        }]
 				    },
 				    options: {
+				    	legend: {
+			    			display: false
+			    		},
 				        scales: {
 				            yAxes: [{
 				                ticks: {

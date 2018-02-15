@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
 	/*
 	background-color: #ff6666;
 	*/
-	background-color: #FFFFFF;
+	background-color: #ff6666;
 }
 
 .progress span {
@@ -298,3 +298,27 @@ body {
 .nav-item {
 
 }
+
+.button-bar {
+	margin: 2% 5% 2% 5%;
+	text-align: center;
+}
+
+.chart-button {
+	margin: 1% 1% 1% 1%;
+}
+
+.course-detail-chart-outline {
+	padding-top: 3%;
+}
+
+.course-card-grade-chart {
+	margin-top: 5%;
+}
+
+.course-card-chart {
+	padding-top: 5%;
+}
+
+
+

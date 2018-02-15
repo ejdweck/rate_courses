@@ -1,54 +1,281 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container-fluid">
-	<h3 id="course-detail-code">{{course.courseDepartment}}{{course.courseNumber}}</h3>
+	<h3 id="course-detail-code">{{course.courseDepartment}} {{course.courseNumber}}</h3>
 	<h3 class="text-muted" id="course-detail-name">{{course.courseName}}</h3>
 	<h6 id="course-detail-credits">{{course.credits}} credits</h6>
 	<h5 id="course-detail-description">{{course.courseInfo}}</h5>
 	<br>
 	<div class="row">
 		<div class="col-md-6">
-			<h3>Fall 2017 Grade Data</h3>
-			<div class="card border-dark">
+			<h3>Grade Distribution Data</h3>
+			<div class="button-bar">
+				<button class="btn btn-outline-dark chart-button active" id="fall17-btn">
+					Fall '17
+				</button>
+				<button class="btn btn-outline-dark chart-button" id="spring17-btn">
+					Spring '17
+				</button>
+				<button class="btn btn-outline-dark chart-button" id="fall16-btn">
+					Fall '16
+				</button>
+				<button class="btn btn-outline-dark chart-button" id="spring16-btn">
+					Spring '16
+				</button>
+				<button class="btn btn-outline-dark chart-button" id="fall15-btn">
+					Fall '15
+				</button>
+				<button class="btn btn-outline-dark chart-button" id="spring15-btn">
+					Spring '15
+				</button>
+				<button class="btn btn-outline-dark chart-button" id="fall14-btn">
+					Fall '14
+				</button>
+			</div>
+			<div class="card border-dark course-detail-chart-outline">
 				<canvas id="myChart"></canvas>
 			</div>
 			<script>
+			var curr_chart;
+			var fall17 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.fall17.a}},
+		            	{{course.gradeDistributionSemesterId.fall17.ab}},
+		            	{{course.gradeDistributionSemesterId.fall17.b}},
+		            	{{course.gradeDistributionSemesterId.fall17.bc}},
+		            	{{course.gradeDistributionSemesterId.fall17.c}},
+		            	{{course.gradeDistributionSemesterId.fall17.d}},
+		            	{{course.gradeDistributionSemesterId.fall17.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+
+			var spring17 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.spring17.a}},
+		            	{{course.gradeDistributionSemesterId.spring17.ab}},
+		            	{{course.gradeDistributionSemesterId.spring17.b}},
+		            	{{course.gradeDistributionSemesterId.spring17.bc}},
+		            	{{course.gradeDistributionSemesterId.spring17.c}},
+		            	{{course.gradeDistributionSemesterId.spring17.d}},
+		            	{{course.gradeDistributionSemesterId.spring17.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+
+			var fall16 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.fall16.a}},
+		            	{{course.gradeDistributionSemesterId.fall16.ab}},
+		            	{{course.gradeDistributionSemesterId.fall16.b}},
+		            	{{course.gradeDistributionSemesterId.fall16.bc}},
+		            	{{course.gradeDistributionSemesterId.fall16.c}},
+		            	{{course.gradeDistributionSemesterId.fall16.d}},
+		            	{{course.gradeDistributionSemesterId.fall16.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+			
+			var spring16 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.spring16.a}},
+		            	{{course.gradeDistributionSemesterId.spring16.ab}},
+		            	{{course.gradeDistributionSemesterId.spring16.b}},
+		            	{{course.gradeDistributionSemesterId.spring16.bc}},
+		            	{{course.gradeDistributionSemesterId.spring16.c}},
+		            	{{course.gradeDistributionSemesterId.spring16.d}},
+		            	{{course.gradeDistributionSemesterId.spring16.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+
+		   	var fall15 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.fall15.a}},
+		            	{{course.gradeDistributionSemesterId.fall15.ab}},
+		            	{{course.gradeDistributionSemesterId.fall15.b}},
+		            	{{course.gradeDistributionSemesterId.fall15.bc}},
+		            	{{course.gradeDistributionSemesterId.fall15.c}},
+		            	{{course.gradeDistributionSemesterId.fall15.d}},
+		            	{{course.gradeDistributionSemesterId.fall15.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+			
+			var spring15 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.spring15.a}},
+		            	{{course.gradeDistributionSemesterId.spring15.ab}},
+		            	{{course.gradeDistributionSemesterId.spring15.b}},
+		            	{{course.gradeDistributionSemesterId.spring15.bc}},
+		            	{{course.gradeDistributionSemesterId.spring15.c}},
+		            	{{course.gradeDistributionSemesterId.spring15.d}},
+		            	{{course.gradeDistributionSemesterId.spring15.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+			
+			var fall14 = {
+				labels: ["A", "AB", "B", "BC", "C", "D", "F"],
+		        datasets: [{
+		            label: '%',
+		            data: [
+		            	{{course.gradeDistributionSemesterId.fall14.a}},
+		            	{{course.gradeDistributionSemesterId.fall14.ab}},
+		            	{{course.gradeDistributionSemesterId.fall14.b}},
+		            	{{course.gradeDistributionSemesterId.fall14.bc}},
+		            	{{course.gradeDistributionSemesterId.fall14.c}},
+		            	{{course.gradeDistributionSemesterId.fall14.d}},
+		            	{{course.gradeDistributionSemesterId.fall14.f}},
+		            ],
+		            backgroundColor: [
+		                'rgba(255, 99, 132, 0.2)',
+		                'rgba(54, 162, 235, 0.2)',
+		                'rgba(255, 206, 86, 0.2)',
+		                'rgba(75, 192, 192, 0.2)',
+		                'rgba(153, 102, 255, 0.2)',
+		                'rgba(255, 159, 64, 0.2)'
+		            ],
+		            borderColor: [
+		                'rgba(255,99,132,1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            borderWidth: 1
+		        }]
+		    };
+
 			var ctx = document.getElementById("myChart").getContext('2d');
-			var myChart = new Chart(ctx, {
+		    var myChart = new Chart(ctx, {
 			    type: 'bar',
-			    data: {
-			        labels: ["A", "AB", "B", "BC", "C", "D", "F"],
-			        datasets: [{
-			            label: 'Fall 2017 Grade Data',
-			            data: [
-			            	{{course.gradeDistributionDataId.a}},
-			            	{{course.gradeDistributionDataId.ab}},
-			            	{{course.gradeDistributionDataId.b}},
-			            	{{course.gradeDistributionDataId.bc}},
-			            	{{course.gradeDistributionDataId.c}},
-			            	{{course.gradeDistributionDataId.d}},
-			            	{{course.gradeDistributionDataId.f}},
-			            ],
-			            backgroundColor: [
-			                'rgba(255, 99, 132, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(255, 206, 86, 0.2)',
-			                'rgba(75, 192, 192, 0.2)',
-			                'rgba(153, 102, 255, 0.2)',
-			                'rgba(255, 159, 64, 0.2)'
-			            ],
-			            borderColor: [
-			                'rgba(255,99,132,1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(255, 206, 86, 1)',
-			                'rgba(75, 192, 192, 1)',
-			                'rgba(153, 102, 255, 1)',
-			                'rgba(255, 159, 64, 1)'
-			            ],
-			            borderWidth: 1
-			        }]
-			    },
+			    data: fall17,
 			    options: {
+			    	legend: {
+			    		display: false
+			    	},
 			        scales: {
 			            yAxes: [{
 			                ticks: {
@@ -59,8 +286,171 @@
 			        }
 			    }
 			});
+		    curr_chart = myChart;
+		    $("#fall17-btn").on("click", function() {
+		    	curr_chart.destroy();
+			    var ctx1 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx1, {
+				    type: 'bar',
+				    data: fall17,
+				    options: {
+				    	legend: {
+			    			display: false
+			    		},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+			$("#spring17-btn").on("click", function() {
+		    	curr_chart.destroy();
+				var ctx2 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx2, {
+				    type: 'bar',
+				    data: spring17,
+				    options: {
+				    	legend: {
+				    		display: false
+				    	},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+			$("#fall16-btn").on("click", function() {
+		    	curr_chart.destroy();
+			    var ctx3 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx3, {
+				    type: 'bar',
+				    data: fall16,
+				    options: {
+					    legend: {
+				    		display: false
+				    	},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+			$("#spring16-btn").on("click", function() {
+		    	curr_chart.destroy();
+				var ctx4 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx4, {
+				    type: 'bar',
+				    data: spring16,
+				    options: {
+				    	legend: {
+				    		display: false
+				    	},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+			$("#fall15-btn").on("click", function() {
+		    	curr_chart.destroy();
+			    var ctx5 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx5, {
+				    type: 'bar',
+				    data: fall15,
+				    options: {
+				    	legend: {
+				    		display: false
+				    	},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+			$("#spring15-btn").on("click", function() {
+		    	curr_chart.destroy();
+				var ctx6 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx6, {
+				    type: 'bar',
+				    data: spring15,
+				    options: {
+				    	legend: {
+				    		display: false
+				    	},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+			$("#fall14-btn").on("click", function() {
+		    	curr_chart.destroy();
+				var ctx7 = document.querySelector('#myChart').getContext('2d');
+			    var myChart = new Chart(ctx7, {
+				    type: 'bar',
+				    data: fall14,
+				    options: {
+				    	legend: {
+				    		display: false
+				    	},
+				        scales: {
+				            yAxes: [{
+				                ticks: {
+	                				suggestedMin: 0,
+	                    			suggestedMax: 40,
+				                }
+				            }]
+				        }
+				    }
+				});
+			    curr_chart = myChart;
+			});
+
+			$(document).ready(function(){
+		  		$("div.button-bar button.btn").click(function(){
+				    $("div.button-bar").find(".active").removeClass("active");
+				    $(this).addClass("active");
+		  		});  
+			});
 			</script>
 		</div>
+
 		<div class="col-md-6">
 			<h3>Course Reviews</h3>
 			<div class="card-deck">
@@ -88,28 +478,58 @@
 								    	</div>
 								    	<div class="col-md-6">
 										    <p id="chart-title-modal">Fall 2017 Grade Data</p>
-											<canvas id="pie-chart{{course_review.reviewId}}" width="20" height="10"></canvas>
+											<canvas id="chart{{course_review.reviewId}}" width="20" height="10"></canvas>
 											<script>
-											new Chart(document.getElementById("pie-chart{{course_review.reviewId}}"),   {
-											    type: 'doughnut',
+											var ctx = document.getElementById("chart{{course_review.reviewId}}").getContext('2d');
+											var chart = new Chart(ctx, {
+											    type: 'bar',
 											    data: {
-												    labels: ["A", "AB", "B", "BC", "C", "D", "F"],
-												    datasets: [{
-											        label: "Fall 2017 Grade Data",
-											        backgroundColor: ["#FFC09F", "#FFEE93","#DDDBF1","#EAF9D9","#CCC7B9", "#A8CCC9", "#75B9BE"],
-											        data: [
-												        {{course_review.courseId.gradeDistributionDataId.a}},
-										            	{{course_review.courseId.gradeDistributionDataId.ab}},
-										            	{{course_review.courseId.gradeDistributionDataId.b}},
-										            	{{course_review.courseId.gradeDistributionDataId.bc}},
-										            	{{course_review.courseId.gradeDistributionDataId.c}},
-										            	{{course_review.courseId.gradeDistributionDataId.d}},
-										            	{{course_review.courseId.gradeDistributionDataId.f}},
-											        ]
-											      }]
+											        labels: ["A", "AB", "B", "BC", "C", "D"],
+											        datasets: [{
+											            label: '%',
+											            data: [
+											            	{{course.gradeDistributionSemesterId.fall17.a}},
+											            	{{course.gradeDistributionSemesterId.fall17.ab}},
+											            	{{course.gradeDistributionSemesterId.fall17.b}},
+											            	{{course.gradeDistributionSemesterId.fall17.bc}},
+											            	{{course.gradeDistributionSemesterId.fall17.c}},
+											            	{{course.gradeDistributionSemesterId.fall17.d}},
+											            	{{course.gradeDistributionSemesterId.fall17.f}},
+											            ],
+											            backgroundColor: [
+											                'rgba(255, 99, 132, 0.2)',
+											                'rgba(54, 162, 235, 0.2)',
+											                'rgba(255, 206, 86, 0.2)',
+											                'rgba(75, 192, 192, 0.2)',
+											                'rgba(153, 102, 255, 0.2)',
+											                'rgba(255, 159, 64, 0.2)'
+											            ],
+											            borderColor: [
+											                'rgba(255,99,132,1)',
+											                'rgba(54, 162, 235, 1)',
+											                'rgba(255, 206, 86, 1)',
+											                'rgba(75, 192, 192, 1)',
+											                'rgba(153, 102, 255, 1)',
+											                'rgba(255, 159, 64, 1)'
+											            ],
+											            borderWidth: 1
+											        }]
 											    },
+											    options: {
+											    	legend: {
+										    			display: false
+										    		},
+											        scales: {
+											            yAxes: [{
+											                ticks: {
+								                				suggestedMin: 0,
+								                    			suggestedMax: 40,
+											                }
+											            }]
+											        }
+											    }
 											});
-											</script>
+											</script>	
 								    	</div>
 							    	</div>
 			  			        	<div class="course-tags-modal">
