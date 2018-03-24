@@ -320,5 +320,13 @@ body {
 	padding-top: 5%;
 }
 
+.course-reviews-title {
+	justify-content: center;
+	margin: auto;
+}
 
-
+.add-course-review-button {
+	float: right;
+	margin-right: 18%;
+	margin-bottom: 0;
+}

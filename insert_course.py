@@ -15,7 +15,7 @@ def close(con):
 def insert_tuples(cursor):
 
     query = ''
-    file_ = open('new_data.txt', 'r', encoding="utf-8")
+    file_ = open('course_data.txt', 'r', encoding="utf-8")
 
     for line in file_:
         temp = str(line)

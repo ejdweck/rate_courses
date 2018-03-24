@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load widget_tweaks %}
 {% block content %}
 <div class="container-fluid">
 	<h3 id="course-detail-code">{{course.courseDepartment}} {{course.courseNumber}}</h3>
@@ -10,27 +11,41 @@
 		<div class="col-md-6">
 			<h3>Grade Distribution Data</h3>
 			<div class="button-bar">
-				<button class="btn btn-outline-dark chart-button active" id="fall17-btn">
-					Fall '17
-				</button>
-				<button class="btn btn-outline-dark chart-button" id="spring17-btn">
-					Spring '17
-				</button>
-				<button class="btn btn-outline-dark chart-button" id="fall16-btn">
-					Fall '16
-				</button>
-				<button class="btn btn-outline-dark chart-button" id="spring16-btn">
-					Spring '16
-				</button>
-				<button class="btn btn-outline-dark chart-button" id="fall15-btn">
-					Fall '15
-				</button>
-				<button class="btn btn-outline-dark chart-button" id="spring15-btn">
-					Spring '15
-				</button>
-				<button class="btn btn-outline-dark chart-button" id="fall14-btn">
-					Fall '14
-				</button>
+				{% if course.gradeDistributionSemesterId.fall17 != None %}
+					<button class="btn btn-outline-dark chart-button active" id="fall17-btn">
+						Fall '17
+					</button>
+				{% endif %}
+				{% if course.gradeDistributionSemesterId.spring17 != None %}
+					<button class="btn btn-outline-dark chart-button" id="spring17-btn">
+						Spring '17
+					</button>
+				{% endif %}
+				{% if course.gradeDistributionSemesterId.fall16 != None %}
+					<button class="btn btn-outline-dark chart-button" id="fall16-btn">
+						Fall '16
+					</button>
+				{% endif %}
+				{% if course.gradeDistributionSemesterId.spring16 != None %}
+					<button class="btn btn-outline-dark chart-button" id="spring16-btn">
+						Spring '16
+					</button>
+				{% endif %}
+				{% if course.gradeDistributionSemesterId.fall15 != None %}
+					<button class="btn btn-outline-dark chart-button" id="fall15-btn">
+						Fall '15
+					</button>
+				{% endif %}
+				{% if course.gradeDistributionSemesterId.spring15 != None %}
+					<button class="btn btn-outline-dark chart-button" id="spring15-btn">
+						Spring '15
+					</button>
+				{% endif %}
+				{% if course.gradeDistributionSemesterId.fall14 != None %}
+					<button class="btn btn-outline-dark chart-button" id="fall14-btn">
+						Fall '14
+					</button>
+				{% endif %}
 			</div>
 			<div class="card border-dark course-detail-chart-outline">
 				<canvas id="myChart"></canvas>
@@ -450,19 +465,170 @@
 			});
 			</script>
 		</div>
-
 		<div class="col-md-6">
-			<h3>Course Reviews</h3>
+			<script>
+		    $(function() {
+		      var instructorNames = [
+		         {% for name in instructors %}
+		            "{{ name.firstName }} {{ name.lastName }}" {% if not forloop.last %},{% endif %}
+		         {% endfor %}
+		      ];
+
+		      $( "#instructorName" ).autocomplete({
+		        source: function(request, response) {
+		        var results = $.ui.autocomplete.filter(instructorNames, request.term);        
+		        response(results.slice(0, 10));
+		      }
+		      });
+		    });
+
+		    $(function() {
+		      var rating = $('#ratingSlider').val();
+		      console.log(rating)
+		    });
+
+		    $(document).on('input', '#rating', function() {
+		        $('#slider_value').html( $(this).val() );
+		    });
+
+		    // TODO change to jquery 
+		    function recordWeedOutButton(o){
+		      $('#weedOutButton').button('toggle') 
+		      if (document.getElementById('weedOutButton').classList.contains('active')) {
+		        document.getElementById('weedOutField').value=1;
+		      } else {
+		        document.getElementById('weedOutField').value=0;
+		      }
+		    }
+
+		    function recordInterestingContentButton(o){
+		      $('#interestingContentButton').button('toggle') 
+		      if (document.getElementById('interestingContentButton').classList.contains('active')) {
+		        document.getElementById('interestingContentField').value=1;
+		      } else {
+		        document.getElementById('interestingContentField').value=0;
+		      }
+		    }
+		    
+		    function recordLotsOfHomeworkButton(o){
+		      document.getElementById('lotsOfHomeworkButton').value=1;
+		      $('#lotsOfHomeworkButton').button('toggle') 
+		      if (document.getElementById('lotsOfHomeworkButton').classList.contains('active')) {
+		        document.getElementById('lotsOfHomeworkField').value=1;
+		      } else {
+		        document.getElementById('lotsOfHomeworkField').value=0;
+		      }
+		    }
+
+		    function recordMandatoryAttendanceButton(o){
+		      $('#mandatoryAttendanceButton').button('toggle') 
+		      if (document.getElementById('mandatoryAttendanceButton').classList.contains('active')) {
+		        document.getElementById('mandatoryAttendanceField').value=1;
+		      } else {
+		        document.getElementById('mandatoryAttendanceField').value=0;
+		      }
+		    }
+		    </script>
+		    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		      <div class="modal-dialog modal-lg" role="document">
+		        <div class="modal-content">
+		          <div class="modal-header">
+		            <h5 class="modal-title" id="exampleModalLabel">New Course Review</h5>
+		            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		              <span aria-hidden="true">&times;</span>
+		            </button>
+		          </div>
+		          <div class="modal-body">
+		            <div class="form-box add-course-review-form">
+		              <form method="post">
+		                {% csrf_token %}
+		                <div class="container addCourseReviewForm">
+		                  <h3 id="formTitle">Add a course review and help your fellow classmates!</h3>
+		                  <br>
+		                  <div class=row>
+		                    <div class="col">
+		                    	{{course.courseDepartment}}: {{course.courseName}}
+		                    </div>
+		                  </div>
+		                  <br>
+		                  <div class=row>
+		                      <div class="col">
+		                        <label for="instructorName">Instructor Name</label>
+		                          {% render_field form.instructorName id+="instructorName" class+="form-control instructorName" placeholder="Kristaps Porzingis" %}
+		                          <small id="instructorName" class="form-text text-muted"></small>
+		                      </div>
+		                  </div>
+		                  <br>
+		                  <div class=row>
+		                      <div class="col">
+		                        <label id="ratingSlider" for="rating">Rating</label>
+		                          {% render_field form.rating id+="rating" class+="form-control rating" placeholder="" %}
+		                            <span id="slider_value">5</span>
+		                          <small id="rating" class="form-text text-muted">Rate 1 to 10.</small>
+		                      </div>
+		                  </div>
+		                  <br>
+		                  <div class=row>
+		                      <div class="col">
+		                          <p>Select all that apply</p>
+		                          {% render_field form.weedOutCourse id+="weedOutField" class+="form-control course-review-tag-btn" %}
+		                          {% render_field form.interestingContent id+="interestingContentField" class+="form-control course-review-tag-btn" %}
+		                          {% render_field form.lotsOfHomework id+="lotsOfHomeworkField" class+="form-control " %}
+		                          {% render_field form.mandatoryAttendance id+="mandatoryAttendanceField" class+="form-control" %}
+		                          <button type=button class="btn btn-outline-danger lg course-review-tag-btn" id="weedOutButton" onclick="recordWeedOutButton(this)">Weed Out Course</button>
+		                          <button type=button class="btn btn-outline-primary lg course-review-tag-btn" id="interestingContentButton" onclick="recordInterestingContentButton(this)">Interesting Content</button>
+		                          <button type=button class="btn btn-outline-warning lg course-review-tag-btn" id="lotsOfHomeworkButton" onclick="recordLotsOfHomeworkButton(this)">Lots of Homework</button>
+		                          <button type=button class="btn btn-outline-info lg course-review-tag-btn" id="mandatoryAttendanceButton" onclick="recordMandatoryAttendanceButton(this)">MandatoryAttendance</button>
+		                      </div>
+		                  </div>
+		                  <br>
+		                  <div class=row>
+		                      <div class="col">
+		                        <label for="comments">review</label>
+		                          {% render_field form.review id+="comments" class+="form-control review" placeholder="What an interesting course!" %}
+		                          <small id="comments" class="form-text text-muted">Any comments to justify your rating. Common topics to include are instructor difficulty or hours spent per week.</small>
+		                      </div>
+		                  </div>
+		                  <br>
+		                  <div class=row>
+		                    <div class="col">
+		                      <div class="form-actions">
+		                          <button class="btn btn-primary lg" type="submit">Submit</button>
+		                      </div>
+		                    </div>
+		                  </div>
+		                </div>
+		              </form>
+		            </div>
+		          </div>
+		          <div class="modal-footer">
+		            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="row">
+				<h3 class="course-reviews-title">Course Reviews</h3>
+			</div>
+		    <div class="row">
+		    	<div class="col-md-6">
+		    	</div>
+		    	<div class="col-md-6">
+			    	<button class="add-course-review-button btn btn-outline-dark" id="add-course-review-button" data-toggle="modal" data-target="#exampleModal">
+						Add Review
+					</button>
+		    	</div>
+			</div>
 			<div class="card-deck">
 				{% for course_review in course_reviews %}
 				<div class="card border-dark mb-3 color{{course.rating}}" id="card-box-card-detail">
 			    	<div class="card-header">
-				    	    <h6 >{{course_review.courseId.courseDepartment}}{{course_review.courseId.courseNumber}}</h6>
+				    	    <h6 >{{course_review.courseId.courseDepartment}} {{course_review.courseId.courseNumber}}</h6>
 							<h6 class="card-subtitle text-muted">{{course_review.courseId.courseName}}</h6>
 			    	</div>
 				    <div class="card-body text-dark" data-toggle="modal" data-target=".review-{{course.reviewId}}">
 						<div class="modal fade course-review-modal review-{{course.reviewId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-						  <div class="modal-dialog modal-lg ">
+						  <div class="modal-dialog modal-lg">
 						    <div class="modal-content">
 						    	<div class="modal-header">
 							    	<h5 class="modal-title" id="course-code-modal">{{course_review.courseId.courseDepartment}}{{course_review.courseId.courseNumber}}</h5>

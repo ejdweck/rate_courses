@@ -2,12 +2,6 @@ import datetime
 from django import forms
 
 class AddCourseReviewForm(forms.Form):
-    courseDepartmentAndNumber = forms.CharField(
-        required = True,
-        label = 'courseDepartmentAndNumber',
-        max_length = 32
-    )
-
     instructorName = forms.CharField(
         required = True,
         label = 'instructorName',

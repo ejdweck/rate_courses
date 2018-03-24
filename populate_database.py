@@ -65,11 +65,18 @@ def add_course_tags():
 def add_fake_course_reviews():
     all_courses = Course.objects.all() 
     for c in all_courses:
+        ratings = [random.randint(1,10), random.randint(1,10), random.randint(1,10), random.randint(1,10), random.randint(1,10), random.randint(1,10)]
+        averageRating = (ratings[0] + ratings[1] + ratings[2] + ratings[3] + ratings[4] + ratings[5])/6
+        num_ratings = 6
+        c.averageRating = averageRating
+        c.numberOfRatings += 6
+        c.save()
         for x in range(5):
             review_text = "It's a dangerous business, Frodo, going out your door. You step onto the road, and if you don't keep your feet, there's no knowing where you might be swept off to."
             tag = CourseReviewTag.objects.get(courseReviewTagId=random.randint(1,4))
             instructor = Instructor.objects.get(instructorId=random.randint(1,4))
-            review = add_course_review(c,instructor,tag,review_text, random.randint(1,10), datetime.datetime.now())
+            rating = random.randint(1,10)
+            review = add_course_review(c,instructor,tag,review_text, ratings[x], datetime.datetime.now())
 
 def read_grade_distribution_data():
     curr_course_dept = ""

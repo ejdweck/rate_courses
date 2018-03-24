@@ -23,12 +23,12 @@ def homepage(request):
     courses = create_pages_object_limit_6(request, course_list)
    
     # list including necessary data for html blog tags (form, courses, instructurs, course_reviews)
-    argumentList = modal_form(request)
+    argumentList =  [1,2,3]
     return render(request, 'homepage.html', {'form':argumentList[0],'courses':courses,'instructors':argumentList[2]})
 
 def about(request):
     # list including necessary data for html block tags (form, courses, instructurs, course_reviews)
-    argumentList = modal_form(request)
+    argumentList =  [1,2,3]
     return render(request, 'about.html', {'form':argumentList[0],'courses':argumentList[1],'instructors':argumentList[2]})
 
 def course_detail(request, pk):
@@ -41,12 +41,12 @@ def course_detail(request, pk):
     course_reviews = CourseReview.objects.filter(courseId=course)
     course_reviews_pages = create_pages_object_limit_4(request, course_reviews)
 
-    argumentList = modal_form(request)
+    argumentList = modal_form(request,course)
 
     return render(request, 'course_detail.html', {'course': course,'course_reviews':course_reviews_pages, 'form':argumentList[0]})
 
 def search(request):
-    argumentList = modal_form(request)
+    argumentList = [1,2,3]
     if request.method == 'GET': # If the form is submitted
         search_query = request.GET.get('searchbox')
         # search on Course table
@@ -58,15 +58,14 @@ def search(request):
         else:
             courses = Course.objects.all()
             courses_pages = create_pages_object_limit_6(request, courses)
-            argumentList = modal_form(request)
+            argumentList =[1,2,3]
             print(search_query)
             return render(request, 'search.html', {'courses': courses_pages, 'form': argumentList[0]})
 
     elif request.method == 'POST':
         courses = Course.objects.all()
         course_pages = create_pages_object_limit_6(request, courses)
-        argumentList = modal_form(request)
-
+        argumentList =[1,2,3]
         return render(request, 'search.html', {'courses': course_pages, 'form': argumentList[0]})
 
 
@@ -94,7 +93,7 @@ def create_pages_object_limit_4(request, objectList):
         objects = paginator.page(paginator.num_pages)
     return objects
 
-def modal_form(request):
+def modal_form(request, course):
     if request.method == 'GET':
         form = AddCourseReviewForm(auto_id=True)
         # get courses for auto complete
@@ -111,18 +110,9 @@ def modal_form(request):
         instructors = Instructor.objects.all()
         argumentList = [form, courses, instructors]
         if form.is_valid():
-            # parse course department and course number from single field on form
-            courseDepartmentIndex = 0
-            courseDepartmentAndNumber = form.cleaned_data['courseDepartmentAndNumber']
-            for c in range(len(courseDepartmentAndNumber)):
-                if (courseDepartmentAndNumber[c].isdigit()):
-                    courseDepartmentIndex = c
-                    break;
-
-            courseDepartment = courseDepartmentAndNumber[0:courseDepartmentIndex]
-            # force courseDepartment to uppercase letters for consistency in database
-            courseDepartment = courseDepartment.upper()
-            courseNumber = courseDepartmentAndNumber[courseDepartmentIndex:len(courseDepartmentAndNumber)]
+            # assign course from course object passed from course_detail view
+            courseDepartment = course.courseDepartment
+            courseNumber = course.courseNumber
             # parse review from form on field
             review = form.cleaned_data['review']
             # parse rating from form on field
